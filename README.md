@@ -1,53 +1,119 @@
-# Desafio Técnico
-## Objetivo
-No cooperativismo, cada associado possui um voto e as decisões são tomadas em assembleias, por votação. A partir disso, você precisa criar uma solução back-end para gerenciar essas sessões de votação. Essa solução deve ser executada na nuvem e promover as seguintes funcionalidades através de uma API REST:
-- Cadastrar uma nova pauta;
-- Abrir uma sessão de votação em uma pauta (a sessão de votação deve ficar aberta por um tempo determinado na chamada de abertura ou 1 minuto por default);
-- Receber votos dos associados em pautas (os votos são apenas 'Sim'/'Não'. Cada associado é identificado por um id único e pode votar apenas uma vez por pauta);
-- Contabilizar os votos e dar o resultado da votação na pauta.
+## Requirements
 
-Para fins de exercício, a segurança das interfaces pode ser abstraída e qualquer chamada para as interfaces pode ser considerada como autorizada. A escolha da linguagem, frameworks e bibliotecas é livre (desde que não infrinja direitos de uso).
+For building and running the application you need:
 
-É importante que as pautas e os votos sejam persistidos e que não sejam perdidos com o restart da aplicação.
+- [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+- [Maven 3](https://maven.apache.org)
+- [postgresql](https://www.postgresql.org/download/)
 
-### Tarefas bônus
-As tarefas bônus não são obrigatórias, mas nos permitem avaliar outros conhecimentos que você possa ter.
+## Running the application locally
 
-A gente sempre sugere que o candidato pondere e apresente até onde consegue fazer, considerando o seu
-nível de conhecimento e a qualidade da entrega.
-#### Tarefa Bônus 1 - Integração com sistemas externos
-Integrar com um sistema que verifique, a partir do CPF do associado, se ele pode votar
-- GET https://user-info.herokuapp.com/users/{cpf}
-- Caso o CPF seja inválido, a API retornará o HTTP Status 404 (Not found). Você pode usar geradores de CPF para gerar CPFs válidos;
-- Caso o CPF seja válido, a API retornará se o usuário pode (ABLE_TO_VOTE) ou não pode (UNABLE_TO_VOTE) executar a operação
-Exemplos de retorno do serviço
+It is necessary to create a database in postgres after installation with the name: dbvoting.
 
-#### Tarefa Bônus 2 - Mensageria e filas
-Classificação da informação: Uso Interno
-O resultado da votação precisa ser informado para o restante da plataforma, isso deve ser feito preferencialmente através de mensageria. Quando a sessão de votação fechar, poste uma mensagem com o resultado da votação.
+After database creation, run the command, in root folder:
 
-#### Tarefa Bônus 3 - Performance
-Imagine que sua aplicação possa ser usada em cenários que existam centenas de milhares de votos. Ela deve se comportar de maneira performática nesses cenários;
-- Testes de performance são uma boa maneira de garantir e observar como sua aplicação se comporta.
+$ mvn install
 
-#### Tarefa Bônus 4 - Versionamento da API
-Como você versionaria a API da sua aplicação? Que estratégia usar?
+Open in root folder power sheel or cmd
+and insert command:
 
-### O que será analisado
-- Simplicidade no design da solução (evitar over engineering)
-- Organização do código
-- Arquitetura do projeto
-- Boas práticas de programação (manutenibilidade, legibilidade etc)
-- Possíveis bugs
-- Tratamento de erros e exceções
-- Explicação breve do porquê das escolhas tomadas durante o desenvolvimento da solução
-- Uso de testes automatizados e ferramentas de qualidade
-- Limpeza do código
-- Documentação do código e da API
-- Logs da aplicação
-- Mensagens e organização dos commits
+$ java -jar .\target\voting-0.0.1-SNAPSHOT.jar
 
-### Observações importantes
-- Não inicie o teste sem sanar todas as dúvidas
-- Iremos executar a aplicação para testá-la, cuide com qualquer dependência externa e deixe claro caso haja instruções especiais para execução do mesmo
-- Teste bem sua solução, evite bugs
+## How to use the application
+
+The application will be listening by default on HTTP port 8080.
+
+## End Points
+
+Some calls to this api are as an example in this postman link below:
+
+https://www.getpostman.com/collections/7482b99b1e8f6592d3ba
+
+Associates API
+
+Create associate:
+
+POST : localhost:8080/api/voting/associates
+{
+   "name": "teste 1",
+   "document": "03122324032" 
+}
+
+------------
+
+Topic API
+
+Create Topic
+
+POST: localhost:8080/api/voting/topics
+{
+  "name" : "TOPICO TESTE 1",
+  "description" : "DESCRICAO TOPICO TESTE 1"
+}
+
+Result Topic 
+GET: localhost:8080/api/voting/topics/{idTopic}/ascertainment
+
+Ex Response : 
+{
+    "countVotes": 2,
+    "countVotesYes": 1,
+    "countVotesNo": 1,
+    "topicEntity": {
+        "id": 1,
+        "name": "TOPICO TESTE 1",
+        "description": "DESCRICAO TOPICO TESTE 1"
+    }
+}
+------------
+
+Session API 
+
+Create Session 
+
+POST: localhost:8080/api/voting/sessions
+
+{
+   "idTopic": 1,
+   "expiration": null
+}
+
+OR
+
+{
+   "idTopic": 1,
+   "expiration": "2021-06-24 23:38:28"
+}
+
+----------------------------------
+
+Vote API
+
+Create vote
+
+POST: localhost:8080/api/voting/votes
+{
+    "voteEnum" : "SIM",
+    "idSession" : 1,
+    "idAssociate" : 1
+}
+
+----------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
