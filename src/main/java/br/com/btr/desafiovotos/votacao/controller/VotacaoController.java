@@ -15,7 +15,7 @@ import br.com.btr.desafiovotos.votacao.json.Votacao;
 import br.com.btr.desafiovotos.votacao.service.VotacaoService;
 
 @RestController
-@RequestMapping("/votacao")
+@RequestMapping("/votacao/v1")
 public class VotacaoController {
 
 	@Autowired
