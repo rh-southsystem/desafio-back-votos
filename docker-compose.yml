@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  postgres:
+    image: "postgres:11"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "cooperative@!"
+      POSTGRES_DB: "cooperative"
+      TZ: "America/Brasilia"
+    ports:
+      - "15432:5432"
+    volumes:
+      - ./database:/var/lib/postgresql/data
+    networks:
+      - postgres-compose-network
+
+networks:
+  postgres-compose-network:
+    driver: bridge
