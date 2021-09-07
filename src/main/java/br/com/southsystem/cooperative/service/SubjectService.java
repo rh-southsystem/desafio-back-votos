@@ -1,6 +1,8 @@
 package br.com.southsystem.cooperative.service;
+import br.com.southsystem.cooperative.domain.Subject;
 import br.com.southsystem.cooperative.service.dto.SubjectCreateRequestDTO;
 import br.com.southsystem.cooperative.service.dto.SubjectDTO;
+import br.com.southsystem.cooperative.service.dto.SubjectResultDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.Optional;
@@ -31,5 +33,20 @@ public interface SubjectService {
      */
     Optional<SubjectDTO> findOne(Long id);
 
+    /**
+     * Get the voting result of subject.
+     *
+     * @param id the id of the entity.
+     * @return the entity.
+     */
+    SubjectResultDTO votingResult(Long id);
+
+    /**
+     * Get the "id" subject.
+     *
+     * @param id the id of the domain.
+     * @return the domain.
+     */
+    Optional<Subject> getDomainSubject(Long id);
 
 }
