@@ -1,27 +1,20 @@
 package br.com.southsystem.cooperative.service.impl;
 
 import br.com.southsystem.cooperative.domain.Session;
-
 import br.com.southsystem.cooperative.exception.BadRequestAlertException;
 import br.com.southsystem.cooperative.repository.SessionRepository;
 import br.com.southsystem.cooperative.service.SessionService;
 import br.com.southsystem.cooperative.service.SubjectService;
 import br.com.southsystem.cooperative.service.dto.SessionDTO;
-
 import br.com.southsystem.cooperative.service.dto.SessionInitRequestDTO;
 import br.com.southsystem.cooperative.service.mapper.SessionMapper;
-
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -40,7 +33,6 @@ public class SessionServiceImpl implements SessionService {
         this.sessionRepository = sessionRepository;
         this.sessionMapper = sessionMapper;
         this.subjectService = subjectService;
-
     }
 
     /**
@@ -57,7 +49,6 @@ public class SessionServiceImpl implements SessionService {
                 .ifPresent((s) -> new BadRequestAlertException("The session has already been started"));
 
         SessionDTO sessionDTO = sessionMapper.toSessionInitRequestDto(sessionInitRequestDTO);
-        sessionDTO.setStartDateTime(LocalDateTime.now());
         Session session = sessionMapper.toEntity(sessionDTO);
         session = sessionRepository.save(session);
         return sessionMapper.toDto(session);
