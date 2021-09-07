@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 @Entity
 @Data
-public class Session{
+public class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -48,5 +48,33 @@ public class Session{
                 ", subject=" + subject +
                 ", votes=" + votes +
                 '}';
+    }
+
+    public void setStartDateTime(LocalDateTime startDateTime) {
+        this.startDateTime = LocalDateTime.now();
+    }
+
+    public void setEndDateTime(LocalDateTime endDateTime) {
+        this.endDateTime = endDateTime;
+        this.hasValidEndDateTime();
+    }
+
+    private void setDefaultValueToEndDateTime() {
+        this.setEndDateTime(getStartDateTime().plusMinutes(1));
+    }
+
+    private void hasValidEndDateTime() {
+        if (this.getEndDateTime() == null) {
+            this.setDefaultValueToEndDateTime();
+        } else if (LocalDateTime.now().isAfter(this.getEndDateTime())) {
+            throw new InvalidParameterException("End date must be greater than current");
+        }
+    }
+
+    public boolean isOpen() {
+        LocalDateTime now = LocalDateTime.now();
+        if (this.getEndDateTime().isAfter(now)) {
+            return true;
+        } else return false;
     }
 }
