@@ -20,3 +20,12 @@ spring:
     username: postgres
     password: cooperative@!
     driver-class-name: org.postgresql.Driver
+
+cooperative:
+  app:
+    name: 'cooperative-service'
+  cpfExternalApi:
+    url: https://user-info.herokuapp.com/users/
+    results:
+      unableToVote: UNABLE_TO_VOTE
+      ableToVote: ABLE_TO_VOTE
