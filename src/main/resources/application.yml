@@ -4,22 +4,10 @@ server:
     context-path: /api
 
 spring:
+  profiles:
+    active: dev
   application:
     name: cooperative
-  jpa:
-    show-sql: false
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-  jmx:
-    enabled: false
-  datasource:
-    url: jdbc:postgresql://localhost:15432/cooperative
-    username: postgres
-    password: cooperative@!
-    driver-class-name: org.postgresql.Driver
 
 cooperative:
   app:

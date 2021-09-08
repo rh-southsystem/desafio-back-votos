@@ -1,12 +1,14 @@
 package br.com.southsystem.cooperative.service.impl;
 
 import br.com.southsystem.cooperative.domain.enumeration.VoteType;
+import br.com.southsystem.cooperative.exception.BadRequestAlertException;
+import br.com.southsystem.cooperative.exception.CpfUnableToVoteException;
+import br.com.southsystem.cooperative.repository.AffiliatedRepository;
 import br.com.southsystem.cooperative.repository.SessionRepository;
 import br.com.southsystem.cooperative.repository.SubjectRepository;
 import br.com.southsystem.cooperative.repository.VoteRepository;
 import br.com.southsystem.cooperative.service.SessionService;
 import br.com.southsystem.cooperative.service.SubjectService;
-import br.com.southsystem.cooperative.service.VoteService;
 import br.com.southsystem.cooperative.service.dto.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -14,12 +16,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
+
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 public class VoteServiceImplTest {
     @Autowired
     private SessionRepository sessionRepository;
@@ -37,62 +42,69 @@ public class VoteServiceImplTest {
     private VoteRepository voteRepository;
 
     @Autowired
-    private VoteService voteService;
+    private AffiliatedRepository affiliatedRepository;
+
+    @Autowired
+    private VoteServiceImpl voteService;
 
     @DisplayName("Test create a vote in the data base with VoteType Sim")
     @Test
     void testCreateAVoteInTheDataBaseVoteTypeSim() throws Exception {
+        try {
+            var aSubject = getASubjectSaved();
 
-        var aSubject = getASubjectSaved();
+            var aSessionSave = getASessionSaved(aSubject);
+            var cpf = "26283451020";
+            var vote = VoteCreateRequestDTO.builder()
+                    .vote(VoteType.Sim)
+                    .affiliatedCpf(cpf)
+                    .sessionId(aSessionSave.getId())
+                    .build();
 
-        var aSessionSave = getASessionSaved(aSubject);
-        var cpf = "26283451020";
-        var vote = VoteCreateRequestDTO.builder()
-                .vote(VoteType.Não)
-                .affiliatedCpf(cpf)
-                .sessionId(aSessionSave.getId())
-                .build();
+            var voteSaved = voteService.vote(vote);
 
-        var voteSaved = voteService.vote(vote);
+            Assertions.assertNotNull(voteSaved.getVote());
+            Assertions.assertNotNull(voteSaved.getId());
+            Assertions.assertEquals(voteSaved.getVote(), VoteType.Sim);
+            Assertions.assertEquals(voteSaved.getAffiliatedCpf(), cpf);
+            Assertions.assertNotNull(voteSaved.getVoteDateTime());
+            Assertions.assertNotNull(voteSaved.getSessionId());
 
-        Assertions.assertNotNull(voteSaved.getVote());
-        Assertions.assertNotNull(voteSaved.getId());
-        Assertions.assertEquals(voteSaved.getVote(), VoteType.Sim);
-        Assertions.assertEquals(voteSaved.getAffiliatedCpf(), cpf);
-        Assertions.assertNotNull(voteSaved.getVoteDateTime());
-        Assertions.assertNull(voteSaved.getSessionId());
 
-        sessionRepository.deleteById(aSessionSave.getId());
-        subjectRepository.deleteById(aSubject.getId());
-        voteRepository.deleteById(voteSaved.getId());
+        } catch (CpfUnableToVoteException e) {
+            Assertions.assertEquals(e.getMessage(), "The CPF is unable to vote.");
+        }
+        cleanDataBase();
     }
 
     @DisplayName("Test create a vote in the data base with VoteType Não")
     @Test
     void testCreateAVoteInTheDataBaseVoteTypeNao() throws Exception {
 
-        var aSubject = getASubjectSaved();
+        try {
+            var aSubject = getASubjectSaved();
 
-        var aSessionSave = getASessionSaved(aSubject);
-        var cpf = "26283451020";
-        var vote = VoteCreateRequestDTO.builder()
-                .vote(VoteType.Não)
-                .affiliatedCpf(cpf)
-                .sessionId(aSessionSave.getId())
-                .build();
+            var aSessionSave = getASessionSaved(aSubject);
+            var cpf = "26283451020";
+            var vote = VoteCreateRequestDTO.builder()
+                    .vote(VoteType.Não)
+                    .affiliatedCpf(cpf)
+                    .sessionId(aSessionSave.getId())
+                    .build();
+            var voteSaved = voteService.vote(vote);
+            Assertions.assertNotNull(voteSaved.getVote());
+            Assertions.assertNotNull(voteSaved.getId());
+            Assertions.assertEquals(voteSaved.getVote(), VoteType.Não);
+            Assertions.assertEquals(voteSaved.getAffiliatedCpf(), cpf);
+            Assertions.assertNotNull(voteSaved.getVoteDateTime());
+            Assertions.assertNotNull(voteSaved.getSessionId());
 
-        var voteSaved = voteService.vote(vote);
 
-        Assertions.assertNotNull(voteSaved.getVote());
-        Assertions.assertNotNull(voteSaved.getId());
-        Assertions.assertEquals(voteSaved.getVote(), VoteType.Não);
-        Assertions.assertEquals(voteSaved.getAffiliatedCpf(), cpf);
-        Assertions.assertNotNull(voteSaved.getVoteDateTime());
-        Assertions.assertNull(voteSaved.getSessionId());
+        } catch (CpfUnableToVoteException e) {
+            Assertions.assertEquals(e.getMessage(), "The CPF is unable to vote.");
+        }
 
-        sessionRepository.deleteById(aSessionSave.getId());
-        subjectRepository.deleteById(aSubject.getId());
-        voteRepository.deleteById(voteSaved.getId());
+        cleanDataBase();
     }
 
     @DisplayName("Test create a vote in the data base without VoteType")
@@ -109,14 +121,15 @@ public class VoteServiceImplTest {
                 .build();
 
 
-        ConstraintViolationException thrown = Assertions.assertThrows(
-                ConstraintViolationException.class,
-                () -> voteService.vote(vote)
-        );
-        Assertions.assertEquals(thrown.getConstraintViolations().size(),1);
+        try {
+            voteService.vote(vote);
+        } catch (CpfUnableToVoteException e) {
+            Assertions.assertEquals(e.getMessage(), "The CPF is unable to vote.");
+        } catch (ConstraintViolationException e) {
+            Assertions.assertEquals(e.getConstraintViolations().size(), 1);
+        }
 
-        sessionRepository.deleteById(aSessionSave.getId());
-        subjectRepository.deleteById(aSubject.getId());
+        cleanDataBase();
 
     }
 
@@ -133,16 +146,16 @@ public class VoteServiceImplTest {
                 .vote(VoteType.Sim)
                 .sessionId(aSessionSave.getId())
                 .build();
+        try {
+            voteService.vote(vote);
+        } catch (CpfUnableToVoteException e) {
+            Assertions.assertEquals(e.getMessage(), "The CPF is unable to vote.");
+        } catch (ConstraintViolationException e) {
+            Assertions.assertEquals(e.getConstraintViolations().size(), 2);
+        }
 
 
-        ConstraintViolationException thrown = Assertions.assertThrows(
-                ConstraintViolationException.class,
-                () -> voteService.vote(vote)
-        );
-        Assertions.assertEquals(thrown.getConstraintViolations().size(),2);
-
-        sessionRepository.deleteById(aSessionSave.getId());
-        subjectRepository.deleteById(aSubject.getId());
+        cleanDataBase();
 
     }
 
@@ -160,14 +173,15 @@ public class VoteServiceImplTest {
                 .build();
 
 
-        ConstraintViolationException thrown = Assertions.assertThrows(
-                ConstraintViolationException.class,
-                () -> voteService.vote(vote)
-        );
-        Assertions.assertEquals(thrown.getConstraintViolations().size(),2);
+        try {
+            voteService.vote(vote);
+        } catch (CpfUnableToVoteException e) {
+            Assertions.assertEquals(e.getMessage(), "The CPF is unable to vote.");
+        } catch (ConstraintViolationException e) {
+            Assertions.assertEquals(e.getConstraintViolations().size(), 2);
+        }
 
-        sessionRepository.deleteById(aSessionSave.getId());
-        subjectRepository.deleteById(aSubject.getId());
+        cleanDataBase();
 
     }
 
@@ -185,14 +199,62 @@ public class VoteServiceImplTest {
                 .build();
 
 
-        ConstraintViolationException thrown = Assertions.assertThrows(
-                ConstraintViolationException.class,
-                () -> voteService.vote(vote)
-        );
-        Assertions.assertEquals(thrown.getConstraintViolations().size(),1);
+        try {
+            voteService.vote(vote);
+        } catch (CpfUnableToVoteException e) {
+            Assertions.assertEquals(e.getMessage(), "The CPF is unable to vote.");
+        } catch (ConstraintViolationException e) {
+            Assertions.assertEquals(e.getConstraintViolations().size(), 1);
+        }
 
-        sessionRepository.deleteById(aSessionSave.getId());
-        subjectRepository.deleteById(aSubject.getId());
+        cleanDataBase();
+
+    }
+
+    @DisplayName("Test create a vote in the data base in same session two times")
+    @Test
+    void testCreateAVoteInTheDataBaseInSameSessionTwoTimes() throws Exception {
+        try {
+            var aSubject = getASubjectSaved();
+
+            var aSessionSave = getASessionSaved(aSubject);
+            var cpf = "26283451020";
+            var vote = VoteCreateRequestDTO.builder()
+                    .vote(VoteType.Não)
+                    .affiliatedCpf(cpf)
+                    .sessionId(aSessionSave.getId())
+                    .build();
+            voteService.vote(vote);
+            voteService.vote(vote);
+
+        } catch (CpfUnableToVoteException e) {
+            Assertions.assertEquals(e.getMessage(), "The CPF is unable to vote.");
+        } catch (BadRequestAlertException e) {
+            Assertions.assertEquals(e.getMessage(), "The affiliated has benn voted in the session!");
+        }
+
+        cleanDataBase();
+    }
+
+    @DisplayName("Test create a vote in the data base in non-existent session")
+    @Test
+    void testCreateAVoteInTheDataBaseInNonExistentSession() throws Exception {
+        try {
+
+            var cpf = "26283451020";
+            var vote = VoteCreateRequestDTO.builder()
+                    .vote(VoteType.Não)
+                    .affiliatedCpf(cpf)
+                    .sessionId(0L)
+                    .build();
+            voteService.vote(vote);
+
+        } catch (CpfUnableToVoteException e) {
+            Assertions.assertEquals(e.getMessage(), "The CPF is unable to vote.");
+        } catch (EntityNotFoundException e) {
+            Assertions.assertEquals(e.getMessage(), "The Session does not exist!");
+        }
+
 
     }
 
@@ -210,5 +272,12 @@ public class VoteServiceImplTest {
                 .build();
 
         return sessionService.init(sessionCreateRequestDTO);
+    }
+
+    public void cleanDataBase() {
+        voteRepository.deleteAll();
+        affiliatedRepository.deleteAll();
+        sessionRepository.deleteAll();
+        subjectRepository.deleteAll();
     }
 }

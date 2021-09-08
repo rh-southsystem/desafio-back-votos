@@ -1,35 +1,28 @@
 package br.com.southsystem.cooperative.service.impl;
 
-import br.com.southsystem.cooperative.domain.Subject;
 import br.com.southsystem.cooperative.repository.SubjectRepository;
 import br.com.southsystem.cooperative.service.dto.SubjectCreateRequestDTO;
 import br.com.southsystem.cooperative.service.dto.SubjectDTO;
-import br.com.southsystem.cooperative.service.mapper.SubjectMapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class SubjectServiceImplTest{
+@ActiveProfiles("test")
+public class SubjectServiceImplTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -67,10 +60,11 @@ public class SubjectServiceImplTest{
                 () -> subjectService.save(subjectCreateRequestDTO)
         );
 
-        Assertions.assertEquals(thrown.getConstraintViolations().size(),2);
+        Assertions.assertEquals(thrown.getConstraintViolations().size(), 2);
 
 
     }
+
     @DisplayName("Test save a Subject in the data base when subject is blank")
     @Test
     void testSaveASubjectInTheDataBaseWhenSubjectIsBlank() throws Exception {
@@ -83,7 +77,7 @@ public class SubjectServiceImplTest{
                 () -> subjectService.save(subjectCreateRequestDTO)
         );
 
-        Assertions.assertEquals(thrown.getConstraintViolations().size(),1);
+        Assertions.assertEquals(thrown.getConstraintViolations().size(), 1);
     }
 
     @Test
@@ -105,9 +99,9 @@ public class SubjectServiceImplTest{
         var anotherSubject = subjectService.findOne(aSubjectSave.getId()).get();
 
         Assertions.assertNotNull(anotherSubject);
-        Assertions.assertEquals(anotherSubject.getId(),aSubjectSave.getId());
-        Assertions.assertEquals(anotherSubject.getSubject(),aSubjectSave.getSubject());
-        Assertions.assertEquals(anotherSubject.getDateTime(),aSubjectSave.getDateTime());
+        Assertions.assertEquals(anotherSubject.getId(), aSubjectSave.getId());
+        Assertions.assertEquals(anotherSubject.getSubject(), aSubjectSave.getSubject());
+        Assertions.assertEquals(anotherSubject.getDateTime(), aSubjectSave.getDateTime());
         Assertions.assertNull(aSubjectSave.getSessionId());
         Assertions.assertNull(anotherSubject.getSessionId());
         subjectRepository.deleteById(aSubjectSave.getId());
