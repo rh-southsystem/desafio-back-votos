@@ -2,8 +2,10 @@ package br.com.southsystem.cooperative.service;
 
 import br.com.southsystem.cooperative.service.dto.SessionDTO;
 import br.com.southsystem.cooperative.service.dto.SessionInitRequestDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -26,6 +28,7 @@ public interface SessionService {
      *
      * @return the list of entities.
      */
+    @Transactional(readOnly = true)
     Page<SessionDTO> findAll(Pageable pageable);
 
     /**
@@ -34,6 +37,13 @@ public interface SessionService {
      * @param id the id of the entity.
      * @return the entity.
      */
+    @Transactional(readOnly = true)
     Optional<SessionDTO> findOne(Long id);
 
+    void isOpen(Long id);
+
+    /**
+     * This method check closed Sessions and send messages to topic.
+     */
+    void checkClosedSessionsAndSendMessageToTopic() throws JsonProcessingException;
 }
