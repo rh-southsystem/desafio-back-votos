@@ -12,6 +12,7 @@ import org.mapstruct.Mapping;
 public interface SessionMapper extends EntityMapper<SessionDTO, Session> {
 
     @Mapping(source = "subject.subject", target = "subjectSubject")
+    @Mapping(source = "subject.id", target = "subjectId")
     SessionDTO toDto(Session session);
 
     @Mapping(source = "subject.id", target = "subjectId")
@@ -20,7 +21,7 @@ public interface SessionMapper extends EntityMapper<SessionDTO, Session> {
 
     @Mapping(source = "subjectId", target = "subjectId")
     @Mapping(source = "endDateTime", target = "endDateTime")
-    SessionDTO toSessionInitRequestDto(SessionInitRequestDTO initRequestDTO);
+    SessionDTO toDto(SessionInitRequestDTO initRequestDTO);
 
     @Mapping(source = "subjectId", target = "subject.id")
     Session toEntity(SessionDTO sessionDTO);

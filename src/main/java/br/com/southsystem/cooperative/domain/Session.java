@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -54,20 +53,23 @@ public class Session {
                 '}';
     }
 
-    public void setStartDateTime(LocalDateTime startDateTime) {
-        this.startDateTime = LocalDateTime.now();
+
+    public LocalDateTime getStartDateTime() {
+        return startDateTime;
     }
 
     public void setEndDateTime(LocalDateTime endDateTime) {
         this.endDateTime = endDateTime;
-        this.hasValidEndDateTime();
     }
 
     private void setDefaultValueToEndDateTime() {
+        if (getStartDateTime() == null) {
+            setStartDateTime(LocalDateTime.now());
+        }
         this.setEndDateTime(getStartDateTime().plusMinutes(1));
     }
 
-    private void hasValidEndDateTime() {
+    public void validateEndDateTime() {
         if (this.getEndDateTime() == null) {
             this.setDefaultValueToEndDateTime();
         } else if (LocalDateTime.now().isAfter(this.getEndDateTime())) {

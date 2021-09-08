@@ -61,7 +61,7 @@ public class SessionServiceImplTest {
         Assertions.assertNotNull(aSessionSave.getEndDateTime());
         Assertions.assertEquals(aSessionSave.getEndDateTime(), currentDate.plusMinutes(60));
         Assertions.assertNotNull(aSessionSave.getId());
-        Assertions.assertNull(aSessionSave.getSubjectId());
+        Assertions.assertNotNull(aSessionSave.getSubjectId());
         sessionRepository.deleteById(aSessionSave.getId());
         subjectRepository.deleteById(aSubject.getId());
 
@@ -83,7 +83,7 @@ public class SessionServiceImplTest {
         Assertions.assertEquals(aSessionSave.getEndDateTime(),
                 aSessionSave.getStartDateTime().plusMinutes(1));
         Assertions.assertNotNull(aSessionSave.getId());
-        Assertions.assertNull(aSessionSave.getSubjectId());
+        Assertions.assertNotNull(aSessionSave.getSubjectId());
         sessionRepository.deleteById(aSessionSave.getId());
         subjectRepository.deleteById(aSubject.getId());
 
@@ -103,11 +103,11 @@ public class SessionServiceImplTest {
                 .subjectId(aSubject.getId())
                 .build();
 
-        DataIntegrityViolationException thrown = Assertions.assertThrows(
-                DataIntegrityViolationException.class,
+        BadRequestAlertException thrown = Assertions.assertThrows(
+                BadRequestAlertException.class,
                 () -> sessionService.init(anohterSessionCreateRequestDTO)
         );
-
+        Assertions.assertEquals(thrown.getMessage(), "The session has already been started");
         sessionRepository.deleteById(aSessionSave.getId());
         subjectRepository.deleteById(aSubject.getId());
     }
@@ -170,10 +170,7 @@ public class SessionServiceImplTest {
         Assertions.assertNotNull(anotherSession);
         Assertions.assertEquals(anotherSession.getId(), aSessionSave.getId());
         Assertions.assertEquals(anotherSession.getSubjectId(), aSessionSave.getSubjectId());
-        Assertions.assertEquals(anotherSession.getStartDateTime(), aSessionSave.getStartDateTime());
-        Assertions.assertEquals(anotherSession.getEndDateTime(), aSessionSave.getEndDateTime());
-        Assertions.assertNull(aSessionSave.getSubjectId());
-        Assertions.assertNull(anotherSession.getSubjectId());
+        Assertions.assertNotNull(aSessionSave.getSubjectId());
         Assertions.assertEquals(anotherSession.getSubjectId(), aSubject.getId());
         sessionRepository.deleteById(aSessionSave.getId());
         subjectRepository.deleteById(aSubject.getId());

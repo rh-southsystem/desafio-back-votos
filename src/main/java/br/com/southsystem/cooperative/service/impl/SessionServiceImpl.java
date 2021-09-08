@@ -58,12 +58,19 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public SessionDTO init(SessionInitRequestDTO sessionInitRequestDTO) {
         log.debug("Request to save Session : {}", sessionInitRequestDTO);
-        subjectService.findOne(sessionInitRequestDTO.getSubjectId()).orElseThrow(() -> new EntityNotFoundException("The Subject does not exist!"));
-        findOneBySubjectId(sessionInitRequestDTO.getSubjectId())
-                .ifPresent((s) -> new BadRequestAlertException("The session has already been started"));
+        subjectService.findOne(sessionInitRequestDTO.getSubjectId()).orElseThrow(() -> {
+            throw new EntityNotFoundException("The Subject does not exist!");
+        });
 
-        SessionDTO sessionDTO = sessionMapper.toSessionInitRequestDto(sessionInitRequestDTO);
+        findOneBySubjectId(sessionInitRequestDTO.getSubjectId())
+                .ifPresent((s) -> {
+                    throw new BadRequestAlertException("The session has already been started");
+                });
+
+        SessionDTO sessionDTO = sessionMapper.toDto(sessionInitRequestDTO);
+        sessionDTO.setStartDateTime(LocalDateTime.now());
         Session session = sessionMapper.toEntity(sessionDTO);
+        session.validateEndDateTime();
         session = sessionRepository.save(session);
         return sessionMapper.toDto(session);
     }

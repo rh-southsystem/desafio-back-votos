@@ -54,8 +54,4 @@ public class VoteResourceTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
     }
-
-
-
-
 }

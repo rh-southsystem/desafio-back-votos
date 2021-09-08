@@ -25,9 +25,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SubjectServiceImplTest {
 
     @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
     private SubjectRepository subjectRepository;
 
     @Autowired
