@@ -115,7 +115,8 @@ public class SubjectResource {
     @ApiOperation(value = "This method get a subject by id with voting result")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Subject successfully retrieved"),
-            @ApiResponse(code = 404, message = "Subject not found")
+            @ApiResponse(code = 404, message = "Subject not found"),
+            @ApiResponse(code = 404, message = "The session of this subject was not opened")
     })
     public ResponseEntity<SubjectResultDTO> getSubjectWithVotingResult(@PathVariable Long id) {
         log.debug("REST request to get Subject by id with voting result: {}", id);

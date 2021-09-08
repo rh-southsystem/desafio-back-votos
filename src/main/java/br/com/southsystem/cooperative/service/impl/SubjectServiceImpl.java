@@ -102,7 +102,7 @@ public class SubjectServiceImpl implements SubjectService {
         log.debug("Request to voting result by subject id: {}", id);
         Subject subject = getDomainSubject(id).orElseThrow(() -> new EntityNotFoundException("The Subject does not exist!"));
         if (subject.getSession() == null) {
-            throw new BadRequestAlertException("The session of this subject isn't open!");
+            throw new BadRequestAlertException("The session of this subject was not opened!");
         }
         SubjectResultDTO subjectResultDTO = subjectMapper.toResultDto(subject);
         List<Vote> votes = subject.getSession().getVotes();
