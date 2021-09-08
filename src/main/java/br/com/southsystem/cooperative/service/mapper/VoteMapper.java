@@ -16,10 +16,14 @@ public interface VoteMapper extends EntityMapper<VoteDTO, Vote> {
     @Mapping(source = "affiliated.cpf", target = "affiliatedCpf")
     VoteDTO toDto(Vote vote);
 
+    @Mapping(source = "sessionId", target = "sessionId")
+    @Mapping(source = "affiliatedCpf", target = "affiliatedCpf")
+    @Mapping(source = "vote", target = "vote")
     VoteDTO toDto(VoteCreateRequestDTO voteDTO);
 
     @Mapping(source = "sessionId", target = "session.id")
     @Mapping(source = "affiliatedId", target = "affiliated.id")
+    @Mapping(source = "affiliatedCpf", target = "affiliated.cpf")
     Vote toEntity(VoteDTO voteDTO);
 
     Vote toEntity(VoteCreateRequestDTO voteDTO);
