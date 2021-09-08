@@ -31,7 +31,7 @@ O sistema foi estruturado pelos pacotes:
 
 - Test - Onde ficaram as classes de testes de unidade do sistema.
 
-## Bibliotecas e tecnologias utilizadas utilizadas
+## Bibliotecas e tecnologias utilizadas
 - Lombok para diminuir a verbosidade.
 - Postgresql para o banco de dados.
 - H2 para o banco de dados de teste para o perfil test.
