@@ -47,10 +47,14 @@ O serviço do docker precisa ter sido iniciado antes da execução do docker-com
     $ docker-compse up -d
 
 ##Build e execução do sistema
-     $ ./mvnw install
-     $ ./mvnw spring-boot:run
+    $ ./mvnw install
+    $ ./mvnw spring-boot:run
 ##Execução dos testes
     $ ./mvnw test
+##Acesso a api do sistema
+A versão 1 da api pode ser acessada em http://localhost:8080/api/v1
+##Acesso a documentação swagger
+Acesso a documentação swagger http://localhost:8080/api/swagger-ui.html
 # Desafio Técnico
 ## Objetivo
 No cooperativismo, cada associado possui um voto e as decisões são tomadas em assembleias, por votação. A partir disso, você precisa criar uma solução back-end para gerenciar essas sessões de votação. Essa solução deve ser executada na nuvem e promover as seguintes funcionalidades através de uma API REST:
