@@ -98,7 +98,6 @@ public class SubjectServiceImplTest {
         Assertions.assertNotNull(anotherSubject);
         Assertions.assertEquals(anotherSubject.getId(), aSubjectSave.getId());
         Assertions.assertEquals(anotherSubject.getSubject(), aSubjectSave.getSubject());
-        Assertions.assertEquals(anotherSubject.getDateTime(), aSubjectSave.getDateTime());
         Assertions.assertNull(aSubjectSave.getSessionId());
         Assertions.assertNull(anotherSubject.getSessionId());
         subjectRepository.deleteById(aSubjectSave.getId());
