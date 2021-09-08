@@ -4,5 +4,26 @@ server:
     context-path: /api
 
 spring:
+  profiles:
+    active: dev
   application:
     name: cooperative
+
+cooperative:
+  app:
+    name: 'cooperative-service'
+  cpfExternalApi:
+    url: https://user-info.herokuapp.com/users/
+    results:
+      unableToVote: UNABLE_TO_VOTE
+      ableToVote: ABLE_TO_VOTE
+
+mensageria:
+  topic:
+    name: sessions_closed
+
+debug: true
+
+logging:
+  level:
+    br.com.southsystem: 'DEBUG'

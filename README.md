@@ -1,3 +1,60 @@
+# Solução do Desafio Técnico
+##O que foi utilizado
+
+- Docker
+- Docker-compose
+- Java 11
+- Spring-boot 2.5.4
+- Postgres 11
+- Kafka
+- Zookeeper
+- Git
+
+##Pré-requisitos
+- Docker
+- Docker-compose
+- Java 11
+
+##Estrutura do sistema
+O sistema foi estruturado pelos pacotes:
+- Config - Onde se encontra a classe SwaggerConfig.java para configuração do swagger para a documentação da api.
+
+- Domain - Onde se encontra todas as entidades do projeto e a partir delas a criação do banco de dados.
+
+- Exception - As exceções criadas para o sistema.
+
+- Repository - Os repositórios do domínio da aplicação.
+
+- Services - Ficaram as interfaces dos serviços, os pacotes das classes DTOs, o pacote para as implementações das interfaces dos serviços, o pacote  dos mappers para mapeamento das classes de entidades para os DTOs e o pacote Util.
+
+- Web.rest.v1 - Pacote onde ficou todos os controladores da api, a qual foi versionada com a utilização do pacaote v1.
+
+- Test - Onde ficaram as classes de testes de unidade do sistema.
+
+##Bibliotecas e tecnologias utilizadas utilizadas
+- Lombok para diminuir a verbosidade.
+- Postgresql para o banco de dados.
+- H2 para o banco de dados de teste para o perfil test.
+- Junit para o desenvolvimento dos testes de unidade.
+- Swagger2 para a documentação da api
+- Spring-boot-starter-webflux para acesso da api externa para checagem de CPF
+- Kafka e Zookeeper para o desenvolvemento da tarefa de mensageria.
+
+##Clone e Preparação do Ambiente
+O serviço do docker precisa ter sido iniciado antes da execução do docker-compose
+
+    $ git clone https://github.com/viniciuscst/desafio-back-votos.git
+    $ docker-compse up -d
+
+##Build e execução do sistema
+    $ ./mvnw install
+    $ ./mvnw spring-boot:run
+##Execução dos testes
+    $ ./mvnw test
+##Acesso a api do sistema
+A versão 1 da api pode ser acessada em http://localhost:8080/api/v1
+##Acesso a documentação swagger
+Acesso a documentação swagger http://localhost:8080/api/swagger-ui.html
 # Desafio Técnico
 ## Objetivo
 No cooperativismo, cada associado possui um voto e as decisões são tomadas em assembleias, por votação. A partir disso, você precisa criar uma solução back-end para gerenciar essas sessões de votação. Essa solução deve ser executada na nuvem e promover as seguintes funcionalidades através de uma API REST:

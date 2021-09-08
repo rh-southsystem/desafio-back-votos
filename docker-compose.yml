@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  postgres:
+    image: "postgres:11"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "cooperative@!"
+      POSTGRES_DB: "cooperative"
+      TZ: "America/Brasilia"
+    ports:
+      - "15432:5432"
+    volumes:
+      - ./database:/var/lib/postgresql/data
+    networks:
+      - postgres-compose-network
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: localhost
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
+networks:
+  postgres-compose-network:
+    driver: bridge
