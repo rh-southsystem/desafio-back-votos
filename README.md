@@ -44,7 +44,7 @@ O sistema foi estruturado pelos pacotes:
 O serviço do docker precisa ter sido iniciado antes da execução do docker-compose
 
     $ git clone https://github.com/viniciuscst/desafio-back-votos.git
-    $ cd esafio-back-votos
+    $ cd desafio-back-votos
     $ docker-compose up -d
 
 ## Build e execução do sistema
