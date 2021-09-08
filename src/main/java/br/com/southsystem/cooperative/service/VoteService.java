@@ -1,9 +1,9 @@
 package br.com.southsystem.cooperative.service;
 
-import br.com.southsystem.cooperative.service.dto.AffiliatedDTO;
+import br.com.southsystem.cooperative.service.dto.CpfExternalApiResultDTO;
 import br.com.southsystem.cooperative.service.dto.VoteCreateRequestDTO;
 import br.com.southsystem.cooperative.service.dto.VoteDTO;
-import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
@@ -32,4 +32,6 @@ public interface VoteService {
      * @return if has or not.
      */
     boolean hasAffiliatedVoteInSessionByAffiliatedCpfAndSessionId(String cpf, Long sessionId);
+
+    Mono<CpfExternalApiResultDTO> verifyCpfIsAbleToVote(String cpf);
 }

@@ -4,6 +4,7 @@ package br.com.southsystem.cooperative.web.rest.v1;
 import br.com.southsystem.cooperative.exception.BadRequestAlertException;
 import br.com.southsystem.cooperative.exception.CpfNotFoundException;
 
+import br.com.southsystem.cooperative.exception.CpfUnableToVoteException;
 import br.com.southsystem.cooperative.exception.handler.CustomResponseEntityExceptionHandler;
 import br.com.southsystem.cooperative.service.VoteService;
 import br.com.southsystem.cooperative.service.dto.VoteCreateRequestDTO;
@@ -42,17 +43,19 @@ public class VoteResource {
      * @param voteCreateRequestDTO the vote to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new voteDTO, with status {@code 400 (Bad Request)} if cpf not have the min length,
      * with status {@code 404 (Not Found)} if the cpf is invalid or with status {@code 404 (Not Found)}
-     *
+     *  with status {@code 400 (Bad Request)} if the cpf is unable to vote.
      */
     @PostMapping("/votes")
     @ApiOperation(value = "This method create a vote. The vote must be 'Sim' or 'Não' --  " +
             "@return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new voteDTO, " +
             "with status {@code 400 (Bad Request)} if cpf not have the min length,\n" +
-            "      with status {@code 404 (Not Found)} if the cpf is invalid\n")
+            "      with status {@code 404 (Not Found)} if the cpf is invalid,\n" +
+            "with status {@code 400 (Bad Request)} if the cpf is unable to vote.")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Vote successfully taken"),
-            @ApiResponse(code = 404, message = "Cpf not have the min length"),
+            @ApiResponse(code = 400, message = "Cpf not have the min length"),
             @ApiResponse(code = 404, message = "Cpf is invalid"),
+            @ApiResponse(code = 400, message = "Cpf is unable to vote"),
     })
     public ResponseEntity<VoteDTO> vote(@RequestBody VoteCreateRequestDTO voteCreateRequestDTO) {
         log.debug("REST request to save Vote : {}", voteCreateRequestDTO);
@@ -69,6 +72,8 @@ public class VoteResource {
             return CustomResponseEntityExceptionHandler.handle(e);
         }catch (CpfNotFoundException e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (CpfUnableToVoteException e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         }catch (Exception e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
