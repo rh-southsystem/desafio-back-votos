@@ -32,6 +32,9 @@ public class Session {
     @NotNull(message = "The endDateTime cannot be null!")
     private LocalDateTime endDateTime;
 
+    @Column
+    private Boolean informedClosing = false;
+
     @OneToOne()
     @JoinColumn(name = "subject_id", referencedColumnName = "id", unique = true)
     @NotNull(message = "The subject cannot be null or invalid!")
