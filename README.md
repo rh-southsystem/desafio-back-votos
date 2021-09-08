@@ -1,5 +1,5 @@
 # Solução do Desafio Técnico
-##O que foi utilizado
+## O que foi utilizado
 
 - Docker
 - Docker-compose
@@ -10,12 +10,12 @@
 - Zookeeper
 - Git
 
-##Pré-requisitos
+## Pré-requisitos
 - Docker
 - Docker-compose
 - Java 11
 
-##Estrutura do sistema
+## Estrutura do sistema
 O sistema foi estruturado pelos pacotes:
 - Config - Onde se encontra a classe SwaggerConfig.java para configuração do swagger para a documentação da api.
 
@@ -31,7 +31,7 @@ O sistema foi estruturado pelos pacotes:
 
 - Test - Onde ficaram as classes de testes de unidade do sistema.
 
-##Bibliotecas e tecnologias utilizadas utilizadas
+## Bibliotecas e tecnologias utilizadas utilizadas
 - Lombok para diminuir a verbosidade.
 - Postgresql para o banco de dados.
 - H2 para o banco de dados de teste para o perfil test.
@@ -40,20 +40,20 @@ O sistema foi estruturado pelos pacotes:
 - Spring-boot-starter-webflux para acesso da api externa para checagem de CPF
 - Kafka e Zookeeper para o desenvolvemento da tarefa de mensageria.
 
-##Clone e Preparação do Ambiente
+## Clone e Preparação do Ambiente
 O serviço do docker precisa ter sido iniciado antes da execução do docker-compose
 
     $ git clone https://github.com/viniciuscst/desafio-back-votos.git
     $ docker-compse up -d
 
-##Build e execução do sistema
+## Build e execução do sistema
     $ ./mvnw install
     $ ./mvnw spring-boot:run
-##Execução dos testes
+## Execução dos testes
     $ ./mvnw test
-##Acesso a api do sistema
+## Acesso a api do sistema
 A versão 1 da api pode ser acessada em http://localhost:8080/api/v1
-##Acesso a documentação swagger
+## Acesso a documentação swagger
 Acesso a documentação swagger http://localhost:8080/api/swagger-ui.html
 # Desafio Técnico
 ## Objetivo
