@@ -23,7 +23,6 @@ public class VotoDTO implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	Long cpf;
-	String teste;
 	Long idPauta;
 	boolean voto;
  

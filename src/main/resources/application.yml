@@ -1,5 +1,9 @@
 spring:
- 
+  
+  h2:
+    console:
+      enabled: true
+       
   datasource:
     driver-class-name: org.h2.Driver
     username: sa
@@ -26,3 +30,5 @@ url:
 
 server:
   port : 8080
+  
+ 
