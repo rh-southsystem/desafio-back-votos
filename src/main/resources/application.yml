@@ -1,0 +1,34 @@
+spring:
+  
+  h2:
+    console:
+      enabled: true
+       
+  datasource:
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+    url: jdbc:h2:file:~/apiPautaVoto;IFEXISTS=TRUE;
+    platform: org.hibernate.dialect.H2Dialect 
+    
+
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: group_id
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+topic:
+  voto: voto
+url:
+  cpf: "https://user-info.herokuapp.com/users/"
+
+server:
+  port : 8080
+  
+ 
