@@ -24,7 +24,7 @@ public class ConsultaCPFService {
 			CpfResponse resultado = restTemplate.getForObject(urlServicoCPF.concat("/").concat(cpf.toString()),  CpfResponse.class);
 			return  "ABLE_TO_VOTE".equals(resultado.getStatus());
 			} catch (Exception e) {
-				throw new ServiceException("Ocorreu um erro ao gravar o arquivo anexo.");
+				throw new ServiceException("Ocorreu um erro ao consultar o CPF.");
 			}	
 	}
 
