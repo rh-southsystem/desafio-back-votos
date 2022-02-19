@@ -15,6 +15,8 @@ Baixar o projeto e executar em qualquer IDE.
 - Para versionamento da API foi utilizado o modelo de subdominio, onde inserimos o número da versão no início da URL. Ex: http://localhost:8080/v1/agenda
 - Para documentacão da API foi utilizado o Swagger, que pode ser acessado a partir da URL: http://localhost:8080/swagger-ui/
 - Para os testes unitários foi utilizado WebMvcTest, DataJpaTest, Junit, Mockito e H2. 
+- Para o teste de performance, podemos utilizar o JMeter.
+- Para qualidade de codigo, podemos utilizar o SonarQube para detectar bug, code smell e vunerabilidades.
 
 
 ## Objetivo
