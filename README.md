@@ -1,4 +1,22 @@
 # Desafio Técnico
+
+## Instruções:
+
+###Tecnologias utilizadas: 
+Java 11, Spring Boot 2, Spring Rest, Spring Data, Spring Cloud, Swagger, JUnit, Mockito, H2, PostgreSQL, AWS RDS e AWS SQS. 
+
+###Como executar o projeto:
+Baixar o projeto e executar em qualquer IDE.
+
+###Demais informações:
+- Para armazenamento dos dados foi utilizado o banco Postgres que está rodando em RDS na AWS.
+- Para a integração com o sistema externo foi utilizado o OpenFeing do Spring Cloud.
+- Para as mensagerias foi utilizado AWS SQS que esta rodando na AWS.
+- Para versionamento da API foi utilizado o modelo de subdominio, onde inserimos o número da versão no início da URL. Ex: http://localhost:8080/v1/agenda
+- Para documentacão da API foi utilizado o Swagger, que pode ser acessado a partir da URL: http://localhost:8080/swagger-ui/
+- Para os testes unitários foi utilizado WebMvcTest, DataJpaTest, Junit, Mockito e H2. 
+
+
 ## Objetivo
 No cooperativismo, cada associado possui um voto e as decisões são tomadas em assembleias, por votação. A partir disso, você precisa criar uma solução back-end para gerenciar essas sessões de votação. Essa solução deve ser executada na nuvem e promover as seguintes funcionalidades através de uma API REST:
 - Cadastrar uma nova pauta;
