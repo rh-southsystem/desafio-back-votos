@@ -55,17 +55,4 @@ public class AgendaController implements AgendaControllerDoc {
         return new ResponseEntity<VotingResultDTO>(result, HttpStatus.OK);
     }
 
-    // TODO: Remover POST. Criado apenas para inserir message na fila
-    @PostMapping("/sqs/{msg}")
-    public ResponseEntity<Void> sendSqsMessage(@PathVariable String msg) {
-        VotingResultDTO result = VotingResultDTO.builder()
-                .countVotesNo(5l)
-                .countVotesYes(10l)
-                .agendaId(1l)
-                .build();
-
-        producer.send(result, null);
-        return new ResponseEntity(HttpStatus.CREATED);
-    }
-
 }

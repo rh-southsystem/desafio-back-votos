@@ -35,14 +35,4 @@ public class Agenda {
     @Column(columnDefinition = "boolean default false")
     private boolean active;
 
-//    @Override
-//    public String toString() {
-//        return "Agenda{" +
-//                "id=" + id +
-//                ", description='" + description + '\'' +
-//                ", dtStart=" + dtStart +
-//                ", dtEnd=" + dtEnd +
-//                ", active=" + active +
-//                '}';
-//    }
 }
