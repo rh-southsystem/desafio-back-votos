@@ -29,8 +29,7 @@ public class AssociateService {
 	public Associate create(AssociateCreateDTO associateCreateDTO) {
 		Associate associate = modelMapper.map(associateCreateDTO, Associate.class);
 		associate.setCreationDate(LocalDateTime.now());
-		associate = associateRepository.save(associate);
-		return associate;
+		return associateRepository.save(associate);
 	}
 	
 	public Associate findById(Integer id) {
@@ -56,7 +55,7 @@ public class AssociateService {
 		associate.setCpf(associateUpdateDTO.getCpf());
 		associate.setName(associateUpdateDTO.getName());
 		associate.setUpdateDate(LocalDateTime.now());
-		return associate;
+		return associateRepository.save(associate);
 	}
 	
 	public void delete(Integer id) {
