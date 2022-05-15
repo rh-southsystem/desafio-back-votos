@@ -21,6 +21,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 
 import com.southsystem.domain.Associate;
 import com.southsystem.domain.enums.AssociatePermission;
@@ -34,6 +35,9 @@ public class AssociateServiceTest {
 	
 	@Mock
     private AssociateRepository associateRepository;
+	
+	@Mock
+	private CPFValidatorService cpfValidatorService;
 	
 	@Mock
     private ModelMapper modelMapper;
@@ -54,6 +58,7 @@ public class AssociateServiceTest {
     @Test
     public void testCreate() {
     	when(associateRepository.save(any(Associate.class))).thenReturn(associate);
+    	when(cpfValidatorService.callApiValidation(any(String.class))).thenReturn(HttpStatus.OK.value());
     	when(modelMapper.map(any(), any())).thenReturn(associate);
     	
     	AssociateCreateDTO associateCreateDTO = new AssociateCreateDTO("92836845082", "João");
@@ -93,6 +98,7 @@ public class AssociateServiceTest {
     			null, LocalDateTime.now());
     	when(associateRepository.save(any(Associate.class))).thenReturn(associate);
     	when(associateRepository.findById(any(Integer.class))).thenReturn(Optional.of(this.associate));
+    	when(cpfValidatorService.callApiValidation(any(String.class))).thenReturn(HttpStatus.OK.value());
     	
     	AssociateUpdateDTO associateUpdateDTO = new AssociateUpdateDTO(1, updateCPF, updateName);
     	Associate updatedAssociate = associateService.update(associateUpdateDTO);
