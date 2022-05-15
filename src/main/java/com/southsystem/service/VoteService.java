@@ -1,5 +1,6 @@
 package com.southsystem.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class VoteService {
 		if (!optionalVote.isEmpty()) {
 			throw new AssociateAlreadyVotedException();
 		}
-		Vote vote = new Vote(votePK, voteChoice.getId());
+		Vote vote = new Vote(votePK, voteChoice.getId(), LocalDateTime.now());
 		
 		return voteRepository.save(vote);
 	}

@@ -1,5 +1,7 @@
 package com.southsystem.domain;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -21,5 +23,8 @@ public class Vote {
 	
 	@Column(nullable = false)
 	private Integer voteChoice;
+	
+	@Column(nullable = false)
+	private LocalDateTime creationDate;
 
 }

@@ -25,7 +25,7 @@ public class AssemblyScheduleConfig {
 	@Autowired
 	private AssemblyService assemblyService;
 
-	@Scheduled(fixedDelay = 60000)
+	@Scheduled(fixedDelay = 30000)
 	public void verifyStartedAssemblies() {
 	    Page<Assembly> startedAssemblies = assemblyService.listByStatus(PAGE, LINES_PER_PAGE,
 	    		ORDER_BY, DIRECTION, AssemblyStatus.STARTED);

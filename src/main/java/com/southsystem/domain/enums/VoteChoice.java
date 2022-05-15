@@ -3,7 +3,8 @@ package com.southsystem.domain.enums;
 public enum VoteChoice {
 
 	YES(1, "Yes"),
-	NO(2, "No");
+	NO(2, "No"),
+	NULLIFIED(3, "Nullified");
 
 	private int id;
 	private String description;

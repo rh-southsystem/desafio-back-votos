@@ -42,6 +42,8 @@ public class Assembly {
 	private LocalDateTime updateDate;
 	private LocalDateTime startDate;
 	private LocalDateTime finishDate;
+	private Integer votesResult;
+	private Float percentage;
 	
 	@Column(nullable = false)
 	private Long duration;

@@ -5,7 +5,8 @@ public enum AssemblyStatus {
 	PENDING(1, "Pending"),
 	STARTED(2, "Started"),
 	FINISHED(3, "Finished"),
-	CANCELED(4, "Canceled");
+	CANCELED(4, "Canceled"),
+	TIED(5, "Tied");
 
 	private int id;
 	private String description;
