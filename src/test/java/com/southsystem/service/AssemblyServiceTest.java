@@ -23,12 +23,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import com.southsystem.domain.Assembly;
-import com.southsystem.domain.Associate;
 import com.southsystem.domain.enums.AssemblyStatus;
 import com.southsystem.dto.AssemblyCreateDTO;
 import com.southsystem.dto.AssemblyReadDTO;
 import com.southsystem.dto.AssemblyUpdateDTO;
-import com.southsystem.dto.AssociateUpdateDTO;
 import com.southsystem.repository.AssemblyRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -49,7 +47,7 @@ public class AssemblyServiceTest {
 	public void init() {
 		MockitoAnnotations.openMocks(this);
 		assembly = new Assembly(1, "Assembly 1", "Gathering", AssemblyStatus.PENDING.getId(),
-				LocalDateTime.now(), null, 100L);
+				LocalDateTime.now(), null, 60000L);
 	}
 	
 	@DisplayName("Validate create method")
@@ -91,7 +89,7 @@ public class AssemblyServiceTest {
     public void testUpdate() {
     	final String updateTitle = "Title 2";
     	final String updateDescription = "Assembly 2";
-    	final Long updateDuration = 200L;
+    	final Long updateDuration = 120000L;
     	Assembly assembly = new Assembly(1, updateTitle, updateDescription, AssemblyStatus.PENDING.getId(),
     			null, LocalDateTime.now(), updateDuration);
     	when(assemblyRepository.save(any(Assembly.class))).thenReturn(assembly);

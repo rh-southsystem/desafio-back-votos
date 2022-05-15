@@ -26,12 +26,15 @@ public class Associate {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(unique=true)
+	@Column(nullable=false, unique=true)
 	@Length(min = 11, max = 11)
 	private String cpf;
 	
+	@Column(nullable = false)
 	@Length(min = 3, max = 50)
 	private String name;
+	
+	@Column(nullable = false)
 	private LocalDateTime creationDate;
 	private LocalDateTime updateDate;
 	
