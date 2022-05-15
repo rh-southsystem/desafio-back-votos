@@ -4,6 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -15,6 +17,7 @@ public class ControllerExceptionHandler {
 	
 	private static final String NOT_FOUND = "Not Found";
 	private static final String DATA_INTEGRITY = "Data Integrity";
+	private static final String VALIDATION_ERROR = "Validation Error";
 	
 	@ExceptionHandler(EntityNotFoundException.class)
 	public ResponseEntity<StandardError> entityNotFoundException(EntityNotFoundException e, HttpServletRequest req) {
@@ -26,6 +29,15 @@ public class ControllerExceptionHandler {
 	public ResponseEntity<StandardError> dataIntegrity(CannotUpdateAssemblyException e, HttpServletRequest req) {
 		StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), DATA_INTEGRITY, e.getMessage(), req.getRequestURI());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+	
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<StandardError> validation(MethodArgumentNotValidException e, HttpServletRequest req) {
+		ValidationError err = new ValidationError(System.currentTimeMillis(), HttpStatus.UNPROCESSABLE_ENTITY.value(), VALIDATION_ERROR, e.getMessage(), req.getRequestURI());
+		for(FieldError x : e.getBindingResult().getFieldErrors()) {
+			err.addError(x.getField(), x.getDefaultMessage());
+		}
+		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
 	}
 
 }
