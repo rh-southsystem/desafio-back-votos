@@ -1,5 +1,7 @@
 package com.southsystem.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,8 +16,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class VotePK {
+public class VotePK implements Serializable {
 	
+	private static final long serialVersionUID = -3028645940480448292L;
+
 	@ManyToOne
 	@JoinColumn(name = "assembly_id")
     private Assembly assembly;

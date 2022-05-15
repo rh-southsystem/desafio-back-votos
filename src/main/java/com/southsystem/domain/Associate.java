@@ -1,8 +1,10 @@
 package com.southsystem.domain;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import lombok.AllArgsConstructor;
@@ -18,11 +20,12 @@ import lombok.Setter;
 public class Associate {
 	
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
 	private String cpf;
 	private String name;
-	private Date creationDate;
-	private Date updateDate;
+	private LocalDateTime creationDate;
+	private LocalDateTime updateDate;
 	
 }
