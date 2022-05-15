@@ -34,6 +34,8 @@ public class Associate {
 	@Length(min = 3, max = 50)
 	private String name;
 	
+	private Integer permission;
+	
 	@Column(nullable = false)
 	private LocalDateTime creationDate;
 	private LocalDateTime updateDate;

@@ -21,6 +21,7 @@ import com.southsystem.domain.Associate;
 import com.southsystem.domain.Vote;
 import com.southsystem.domain.VotePK;
 import com.southsystem.domain.enums.AssemblyStatus;
+import com.southsystem.domain.enums.AssociatePermission;
 import com.southsystem.domain.enums.VoteChoice;
 import com.southsystem.dto.VoteCreateDTO;
 import com.southsystem.repository.VoteRepository;
@@ -52,7 +53,8 @@ public class VoteServiceTest {
 				AssemblyStatus.STARTED.getId(), LocalDateTime.now(), LocalDateTime.now(),
 				LocalDateTime.now(), null, null, null, 60000L);
 		
-		Associate associate = new Associate(1, "92836845082", "João", LocalDateTime.now(), null);
+		Associate associate = new Associate(1, "92836845082", "João",
+				AssociatePermission.ABLE_TO_VOTE.getId(), LocalDateTime.now(), null);
     	when(assemblyService.findById(any(Integer.class))).thenReturn(startedAssembly);
     	when(associateService.findById(any(Integer.class))).thenReturn(associate);
     	when(voteRepository.findById(any(VotePK.class))).thenReturn(Optional.empty());

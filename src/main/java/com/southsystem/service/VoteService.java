@@ -11,11 +11,13 @@ import com.southsystem.domain.Associate;
 import com.southsystem.domain.Vote;
 import com.southsystem.domain.VotePK;
 import com.southsystem.domain.enums.AssemblyStatus;
+import com.southsystem.domain.enums.AssociatePermission;
 import com.southsystem.domain.enums.VoteChoice;
 import com.southsystem.dto.VoteCreateDTO;
 import com.southsystem.repository.VoteRepository;
 import com.southsystem.service.exception.AssemblyNotStartedException;
 import com.southsystem.service.exception.AssociateAlreadyVotedException;
+import com.southsystem.service.exception.AssociateUnableToVoteException;
 
 @Service
 public class VoteService {
@@ -31,16 +33,17 @@ public class VoteService {
 	
 	public Vote vote(VoteCreateDTO voteCreateDTO) {
 		Assembly assembly = assemblyService.findById(voteCreateDTO.getAssembly());
-		
 		if (assembly.getStatus() != AssemblyStatus.STARTED.getId()) {
 			throw new AssemblyNotStartedException();
 		}
 		
 		Associate associate = associateService.findById(voteCreateDTO.getAssociate());
+		if (associate.getPermission() == AssociatePermission.UNABLE_TO_VOTE.getId()) {
+			throw new AssociateUnableToVoteException();
+		}
 		
 		VoteChoice voteChoice = VoteChoice.toEnum(voteCreateDTO.getVote());
 		VotePK votePK = new VotePK(assembly, associate);
-		
 		Optional<Vote> optionalVote = voteRepository.findById(votePK);
 		if (!optionalVote.isEmpty()) {
 			throw new AssociateAlreadyVotedException();

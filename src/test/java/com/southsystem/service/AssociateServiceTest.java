@@ -23,6 +23,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import com.southsystem.domain.Associate;
+import com.southsystem.domain.enums.AssociatePermission;
 import com.southsystem.dto.AssociateCreateDTO;
 import com.southsystem.dto.AssociateReadDTO;
 import com.southsystem.dto.AssociateUpdateDTO;
@@ -45,7 +46,8 @@ public class AssociateServiceTest {
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
-        associate = new Associate(1, "92836845082", "João", LocalDateTime.now(), null);
+        associate = new Associate(1, "92836845082", "João", AssociatePermission.ABLE_TO_VOTE.getId(),
+        		LocalDateTime.now(), null);
     }
     
     @DisplayName("Validate create method")
@@ -87,7 +89,8 @@ public class AssociateServiceTest {
     public void testUpdate() {
     	final String updateCPF = "04945997071";
     	final String updateName = "Gustavo";
-    	Associate associate = new Associate(1, updateCPF, updateName, null, LocalDateTime.now());
+    	Associate associate = new Associate(1, updateCPF, updateName, AssociatePermission.ABLE_TO_VOTE.getId(),
+    			null, LocalDateTime.now());
     	when(associateRepository.save(any(Associate.class))).thenReturn(associate);
     	when(associateRepository.findById(any(Integer.class))).thenReturn(Optional.of(this.associate));
     	

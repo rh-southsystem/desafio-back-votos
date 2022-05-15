@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.southsystem.service.exception.CannotUpdateAssemblyException;
+import com.southsystem.service.exception.CouldNotCallCPFValidationServiceException;
 import com.southsystem.service.exception.EntityNotFoundException;
 import com.southsystem.service.exception.AssemblyNotStartedException;
 import com.southsystem.service.exception.AssociateAlreadyVotedException;
+import com.southsystem.service.exception.AssociateUnableToVoteException;
 import com.southsystem.service.exception.InvalidAssemblyToStartVotingException;
 
 @ControllerAdvice
@@ -49,6 +51,18 @@ public class ControllerExceptionHandler {
 	@ExceptionHandler(AssociateAlreadyVotedException.class)
 	public ResponseEntity<StandardError> associateAlreadyVoted(AssociateAlreadyVotedException e, HttpServletRequest req) {
 		StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), DATA_INTEGRITY, e.getMessage(), req.getRequestURI());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+	
+	@ExceptionHandler(AssociateUnableToVoteException.class)
+	public ResponseEntity<StandardError> associateUnableToVote(AssociateUnableToVoteException e, HttpServletRequest req) {
+		StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), DATA_INTEGRITY, e.getMessage(), req.getRequestURI());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+	
+	@ExceptionHandler(CouldNotCallCPFValidationServiceException.class)
+	public ResponseEntity<StandardError> couldNotCallCPFValidationService(CouldNotCallCPFValidationServiceException e, HttpServletRequest req) {
+		StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), VALIDATION_ERROR, e.getMessage(), req.getRequestURI());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
 	}
 	

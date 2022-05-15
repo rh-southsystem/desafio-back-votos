@@ -1,6 +1,7 @@
 package com.southsystem.dto;
 
-import com.southsystem.domain.VotePK;
+import java.time.LocalDateTime;
+
 import com.southsystem.domain.enums.VoteChoice;
 
 import lombok.AllArgsConstructor;
@@ -14,7 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class VoteReadDTO {
 	
-	private VotePK id;
+	private LocalDateTime creationDate;
 	private String voteChoice;
 	
 	public void setVoteChoice(Integer voteChoice) {

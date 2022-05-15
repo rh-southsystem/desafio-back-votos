@@ -107,7 +107,7 @@ public class AssemblyService {
 			throw new AssemblyNotStartedException();
 		}
 		
-		AssemblyStatus status = this._calculateVoting(assembly);
+		AssemblyStatus status = _calculateVoting(assembly);
 		assembly.setStatus(status.getId());
 		assembly.setFinishDate(LocalDateTime.now());
 		assembly.setUpdateDate(LocalDateTime.now());
