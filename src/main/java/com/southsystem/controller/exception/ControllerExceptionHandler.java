@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.southsystem.service.exception.CannotUpdateAssemblyException;
 import com.southsystem.service.exception.EntityNotFoundException;
+import com.southsystem.service.exception.InvalidAssemblyToFinishVotingException;
+import com.southsystem.service.exception.InvalidAssemblyToStartVotingException;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
@@ -27,6 +29,18 @@ public class ControllerExceptionHandler {
 	
 	@ExceptionHandler(CannotUpdateAssemblyException.class)
 	public ResponseEntity<StandardError> dataIntegrity(CannotUpdateAssemblyException e, HttpServletRequest req) {
+		StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), DATA_INTEGRITY, e.getMessage(), req.getRequestURI());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+	
+	@ExceptionHandler(InvalidAssemblyToStartVotingException.class)
+	public ResponseEntity<StandardError> invalidAssemblyToStartVoting(InvalidAssemblyToStartVotingException e, HttpServletRequest req) {
+		StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), DATA_INTEGRITY, e.getMessage(), req.getRequestURI());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+	
+	@ExceptionHandler(InvalidAssemblyToFinishVotingException.class)
+	public ResponseEntity<StandardError> invalidAssemblyToFinishVoting(InvalidAssemblyToFinishVotingException e, HttpServletRequest req) {
 		StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), DATA_INTEGRITY, e.getMessage(), req.getRequestURI());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
 	}

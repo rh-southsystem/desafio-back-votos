@@ -19,6 +19,6 @@ public class Vote {
 	
 	@EmbeddedId
 	private VotePK id;
-	private VoteChoice voteType;
+	private VoteChoice voteChoice;
 
 }

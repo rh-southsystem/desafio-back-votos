@@ -1,5 +1,7 @@
 package com.southsystem.dto;
 
+import java.time.LocalDateTime;
+
 import com.southsystem.domain.enums.AssemblyStatus;
 
 import lombok.AllArgsConstructor;
@@ -17,6 +19,8 @@ public class AssemblyReadDTO {
 	private String title;
 	private String description;
 	private String status;
+	private LocalDateTime startDate;
+	private LocalDateTime finishDate;
 	private Long duration;
 	
 	public void setStatus(Integer status) {

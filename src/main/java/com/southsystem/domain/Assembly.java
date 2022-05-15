@@ -40,6 +40,8 @@ public class Assembly {
 	@Column(nullable = false)
 	private LocalDateTime creationDate;
 	private LocalDateTime updateDate;
+	private LocalDateTime startDate;
+	private LocalDateTime finishDate;
 	
 	@Column(nullable = false)
 	private Long duration;

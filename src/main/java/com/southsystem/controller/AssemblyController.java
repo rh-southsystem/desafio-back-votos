@@ -74,5 +74,11 @@ public class AssemblyController {
 		assemblyService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
+	
+	@PutMapping(value = "/startVoting/{id}")
+	public ResponseEntity<AssemblyReadDTO> startVoting(@PathVariable Integer id) {
+		Assembly assembly = assemblyService.startVoting(id);
+		return ResponseEntity.ok(modelMapper.map(assembly, AssemblyReadDTO.class));
+	}
 
 }

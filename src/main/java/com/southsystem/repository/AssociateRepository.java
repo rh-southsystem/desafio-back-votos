@@ -8,6 +8,6 @@ import com.southsystem.domain.Associate;
 
 public interface AssociateRepository extends JpaRepository<Associate, Integer> {
 	
-	Page<Associate> findByNameContainsIgnoreCase(String name, Pageable pages);
+	Page<Associate> findByNameContainsIgnoreCase(String name, Pageable pageable);
 
 }

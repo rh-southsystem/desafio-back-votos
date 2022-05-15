@@ -18,6 +18,8 @@ import com.southsystem.dto.AssemblyUpdateDTO;
 import com.southsystem.repository.AssemblyRepository;
 import com.southsystem.service.exception.CannotUpdateAssemblyException;
 import com.southsystem.service.exception.EntityNotFoundException;
+import com.southsystem.service.exception.InvalidAssemblyToFinishVotingException;
+import com.southsystem.service.exception.InvalidAssemblyToStartVotingException;
 
 @Service
 public class AssemblyService {
@@ -53,6 +55,14 @@ public class AssemblyService {
 				.map(associate -> modelMapper.map(associate, AssemblyReadDTO.class));
 	}
 	
+	public Page<Assembly> listByStatus(Integer page, Integer linesPerPage, String orderBy,
+			String direction, AssemblyStatus status) {
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage,
+				Direction.valueOf(direction), orderBy);
+		
+		return assemblyRepository.findByStatus(status.getId(), pageRequest);
+	}
+	
 	public Assembly update(AssemblyUpdateDTO assemblyUpdateDTO) {
 		Assembly assembly = findById(assemblyUpdateDTO.getId());
 		
@@ -70,6 +80,31 @@ public class AssemblyService {
 	public void delete(Integer id) {
 		findById(id);
 		assemblyRepository.deleteById(id);
+	}
+	
+	public Assembly startVoting(Integer id) {
+		Assembly assembly = findById(id);
+		if (assembly.getStatus() != AssemblyStatus.PENDING.getId()) {
+			throw new InvalidAssemblyToStartVotingException();
+		}
+		
+		assembly.setStatus(AssemblyStatus.STARTED.getId());
+		assembly.setStartDate(LocalDateTime.now());
+		assembly.setUpdateDate(LocalDateTime.now());
+		
+		return assemblyRepository.save(assembly);
+	}
+	
+	public Assembly finishVoting(Assembly assembly) {
+		if (assembly.getStatus() != AssemblyStatus.STARTED.getId()) {
+			throw new InvalidAssemblyToFinishVotingException();
+		}
+		
+		assembly.setStatus(AssemblyStatus.FINISHED.getId());
+		assembly.setFinishDate(LocalDateTime.now());
+		assembly.setUpdateDate(LocalDateTime.now());
+		
+		return assemblyRepository.save(assembly);
 	}
 
 }

@@ -47,7 +47,7 @@ public class AssemblyServiceTest {
 	public void init() {
 		MockitoAnnotations.openMocks(this);
 		assembly = new Assembly(1, "Assembly 1", "Gathering", AssemblyStatus.PENDING.getId(),
-				LocalDateTime.now(), null, 60000L);
+				LocalDateTime.now(), null, null, null, 60000L);
 	}
 	
 	@DisplayName("Validate create method")
@@ -91,7 +91,7 @@ public class AssemblyServiceTest {
     	final String updateDescription = "Assembly 2";
     	final Long updateDuration = 120000L;
     	Assembly assembly = new Assembly(1, updateTitle, updateDescription, AssemblyStatus.PENDING.getId(),
-    			null, LocalDateTime.now(), updateDuration);
+    			null, LocalDateTime.now(), null, null, updateDuration);
     	when(assemblyRepository.save(any(Assembly.class))).thenReturn(assembly);
     	when(assemblyRepository.findById(any(Integer.class))).thenReturn(Optional.of(this.assembly));
     	
