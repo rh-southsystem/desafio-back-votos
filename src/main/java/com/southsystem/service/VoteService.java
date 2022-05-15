@@ -3,6 +3,8 @@ package com.southsystem.service;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,14 +33,20 @@ public class VoteService {
 	@Autowired
 	private AssociateService associateService;
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(VoteService.class);
+	
 	public Vote vote(VoteCreateDTO voteCreateDTO) {
+		LOGGER.info("Computing vote for associate: " + voteCreateDTO.getAssociate()
+			+ ", assembly: " + voteCreateDTO.getAssembly());
 		Assembly assembly = assemblyService.findById(voteCreateDTO.getAssembly());
 		if (assembly.getStatus() != AssemblyStatus.STARTED.getId()) {
+			LOGGER.error("Could not compute. Assembly is not started");
 			throw new AssemblyNotStartedException();
 		}
 		
 		Associate associate = associateService.findById(voteCreateDTO.getAssociate());
 		if (associate.getPermission() == AssociatePermission.UNABLE_TO_VOTE.getId()) {
+			LOGGER.error("Could not compute. User is not able to vote");
 			throw new AssociateUnableToVoteException();
 		}
 		
@@ -46,11 +54,14 @@ public class VoteService {
 		VotePK votePK = new VotePK(assembly, associate);
 		Optional<Vote> optionalVote = voteRepository.findById(votePK);
 		if (!optionalVote.isEmpty()) {
+			LOGGER.error("Could not compute. User has voted already");
 			throw new AssociateAlreadyVotedException();
 		}
 		Vote vote = new Vote(votePK, voteChoice.getId(), LocalDateTime.now());
 		
-		return voteRepository.save(vote);
+		vote = voteRepository.save(vote);
+		LOGGER.info("Vote computed successfully. Returning value");
+		return vote;
 	}
 
 }
