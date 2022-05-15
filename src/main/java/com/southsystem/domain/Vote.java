@@ -1,9 +1,8 @@
 package com.southsystem.domain;
 
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-
-import com.southsystem.domain.enums.VoteChoice;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +18,8 @@ public class Vote {
 	
 	@EmbeddedId
 	private VotePK id;
-	private VoteChoice voteChoice;
+	
+	@Column(nullable = false)
+	private Integer voteChoice;
 
 }

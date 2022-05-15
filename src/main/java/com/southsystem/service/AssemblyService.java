@@ -18,7 +18,7 @@ import com.southsystem.dto.AssemblyUpdateDTO;
 import com.southsystem.repository.AssemblyRepository;
 import com.southsystem.service.exception.CannotUpdateAssemblyException;
 import com.southsystem.service.exception.EntityNotFoundException;
-import com.southsystem.service.exception.InvalidAssemblyToFinishVotingException;
+import com.southsystem.service.exception.AssemblyNotStartedException;
 import com.southsystem.service.exception.InvalidAssemblyToStartVotingException;
 
 @Service
@@ -97,7 +97,7 @@ public class AssemblyService {
 	
 	public Assembly finishVoting(Assembly assembly) {
 		if (assembly.getStatus() != AssemblyStatus.STARTED.getId()) {
-			throw new InvalidAssemblyToFinishVotingException();
+			throw new AssemblyNotStartedException();
 		}
 		
 		assembly.setStatus(AssemblyStatus.FINISHED.getId());
