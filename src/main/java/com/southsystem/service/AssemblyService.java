@@ -11,10 +11,12 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.southsystem.domain.Assembly;
+import com.southsystem.domain.enums.AssemblyStatus;
 import com.southsystem.dto.AssemblyCreateDTO;
 import com.southsystem.dto.AssemblyReadDTO;
 import com.southsystem.dto.AssemblyUpdateDTO;
 import com.southsystem.repository.AssemblyRepository;
+import com.southsystem.service.exception.CannotUpdateAssemblyException;
 import com.southsystem.service.exception.EntityNotFoundException;
 
 @Service
@@ -29,6 +31,7 @@ public class AssemblyService {
 	public Assembly create(AssemblyCreateDTO assemblyCreateDTO) {
 		Assembly assembly = modelMapper.map(assemblyCreateDTO, Assembly.class);
 		assembly.setCreationDate(LocalDateTime.now());
+		assembly.setStatus(AssemblyStatus.PENDING.getId());
 		return assemblyRepository.save(assembly);
 	}
 	
@@ -52,6 +55,11 @@ public class AssemblyService {
 	
 	public Assembly update(AssemblyUpdateDTO assemblyUpdateDTO) {
 		Assembly assembly = findById(assemblyUpdateDTO.getId());
+		
+		if (assembly.getStatus() != AssemblyStatus.PENDING.getId()) {
+			throw new CannotUpdateAssemblyException();
+		}
+		
 		assembly.setTitle(assemblyUpdateDTO.getTitle());
 		assembly.setDescription(assemblyUpdateDTO.getDescription());
 		assembly.setDuration(assemblyUpdateDTO.getDuration());

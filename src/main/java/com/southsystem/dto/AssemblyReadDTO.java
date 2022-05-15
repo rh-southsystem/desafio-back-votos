@@ -16,7 +16,11 @@ public class AssemblyReadDTO {
 	private Integer id;
 	private String title;
 	private String description;
-	private AssemblyStatus status;
+	private String status;
 	private Long duration;
+	
+	public void setStatus(Integer status) {
+		this.status = AssemblyStatus.toEnum(status).getDescription();
+	}
 
 }

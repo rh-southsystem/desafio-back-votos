@@ -55,7 +55,7 @@ public class AssemblyController {
 	public ResponseEntity<Page<AssemblyReadDTO>> list(
 			@RequestParam(value="page", defaultValue="0") Integer page, 
 			@RequestParam(value="linesPerPage", defaultValue="10") Integer linesPerPage,
-			@RequestParam(value="orderBy", defaultValue="name") String orderBy,
+			@RequestParam(value="orderBy", defaultValue="title") String orderBy,
 			@RequestParam(value="direction", defaultValue="ASC") String direction,
 			@RequestParam(value="title", defaultValue="") String title) {
 		return ResponseEntity.ok(assemblyService.list(page, linesPerPage, orderBy, 

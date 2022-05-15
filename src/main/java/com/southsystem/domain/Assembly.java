@@ -7,8 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.southsystem.domain.enums.AssemblyStatus;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +24,7 @@ public class Assembly {
 	private Integer id;
 	private String title;
 	private String description;
-	private AssemblyStatus status;
+	private Integer status;
 	private LocalDateTime creationDate;
 	private LocalDateTime updateDate;
 	private Long duration;
