@@ -126,6 +126,9 @@ public class VotacaoServiceImpl implements VotacaoService {
 				log.warn("Associado não tem permissão para votar. CPF: {}", associado.getCpf());
 				throw new EntidadeNaoProcessavelException("Associado não tem permissão para votar.");
 			}
+		} else {
+			log.warn("Associado não tem permissão para votar. CPF: {}", associado.getCpf());
+			throw new EntidadeNaoProcessavelException("Associado não tem permissão para votar.");
 		}
 	}
 
