@@ -18,13 +18,15 @@ git clone https://github.com/marcellcoelho/desafio-back-votos.git
 
 É preciso adicionar os paramentros no application.properties:
 
-#Cloud AWS (Me solicita)
+Cloud AWS (Me solicita)
+
 ```shell
 cloud.aws.credentials.access-key=--
 cloud.aws.credentials.secret-key=--
 ```
 
-#PostgreSQL (Base estará online até o dia 10/06/2022) (Me solicita)
+PostgreSQL (Base estará online até o dia 10/06/2022) (Me solicita)
+
 ```shell
 spring.datasource.url=jdbc:postgresql://br-com-southsystem-1.cl5np2shlq1g.sa-east-1.rds.amazonaws.com:5432/assembleia
 spring.datasource.username=--
