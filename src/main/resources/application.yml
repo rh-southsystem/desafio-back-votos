@@ -1,0 +1,11 @@
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://127.0.0.1:5432/postgres?schema=public
+    username: postgres
+    password: postgres
+    pool:
+      enabled: true
+      name: postgres-pool
+      initial-size: 1
+      max-size: 10
+      max-idle-time: 30m
