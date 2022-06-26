@@ -6,7 +6,7 @@ import org.springframework.data.relational.core.mapping.Table
 import java.time.LocalDateTime
 
 @Table
-data class Votacao(
+data class Voto(
 
     @Id
     val id: Long,
