@@ -1,19 +1,19 @@
 HELP.md
-**/target/
+target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
 
 ### IDEA ###
-**/.idea
-**/.vscode
-**/*.iws
-**/*.iml
-**/*.ipr
+.idea
+.vscode
+*.iws
+*.iml
+*.ipr
 
 # Compiled class file
-**/*.class
+*.class
 
 # Log file
 **/*.log
