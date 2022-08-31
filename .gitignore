@@ -10,6 +10,7 @@ mvnw.cmd
 
 ### IDEA ###
 .idea
+.idea/*.xml
 .vscode
 *.iws
 *.iml
