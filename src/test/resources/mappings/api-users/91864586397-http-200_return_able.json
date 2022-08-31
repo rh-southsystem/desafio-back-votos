@@ -1,0 +1,15 @@
+{
+    "request": {
+        "urlPath": "/users/91864586397",
+        "method": "GET"
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "status": "ABLE_TO_VOTE"
+        },
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+}
