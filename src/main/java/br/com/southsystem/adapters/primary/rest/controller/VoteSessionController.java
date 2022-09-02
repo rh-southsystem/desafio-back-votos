@@ -37,11 +37,23 @@ public class VoteSessionController {
         return voteSessionPrimaryPort.findById(voteSessionId).map(mapper::toDTO);
     }
 
+    @GetMapping("/v1.0/{voteSessionId}/finish")
+    @Operation(
+            summary = "finishing a vote session by id",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Vote Session with result successfully retrieved", content = @Content(schema = @Schema(implementation = VoteSessionResponse.class))),
+                    @ApiResponse(responseCode = "404", description = "Vote Session not found")
+            })
+    Mono<VoteSessionResultResponse> finishVoteSession(@PathVariable("voteSessionId") Long voteSessionId) {
+        log.info("Finishing a vote session by id: {}", voteSessionId);
+        return voteSessionPrimaryPort.finishVoteSession(voteSessionId).map(mapper::toResultDTO);
+    }
+
     @GetMapping("/v1.0/{voteSessionId}/result")
     @Operation(
             summary = "Get a vote session by id with results",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Vote Session successfully retrieved", content = @Content(schema = @Schema(implementation = VoteSessionResultResponse.class))),
+                    @ApiResponse(responseCode = "200", description = "Vote Session with result successfully retrieved", content = @Content(schema = @Schema(implementation = VoteSessionResultResponse.class))),
                     @ApiResponse(responseCode = "404", description = "Vote Session not found")
             })
     Mono<VoteSessionResultResponse> getFindByIdWithResult(@PathVariable("voteSessionId") Long voteSessionId) {

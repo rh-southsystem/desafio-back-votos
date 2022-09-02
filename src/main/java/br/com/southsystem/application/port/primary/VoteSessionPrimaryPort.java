@@ -8,4 +8,6 @@ public interface VoteSessionPrimaryPort {
     Mono<VoteSession> saveVoteSession(VoteSession voteSession);
 
     Mono<VoteSession> findVoteSessionByIdWithResult(Long voteSessionId);
+
+    Mono<VoteSession> finishVoteSession(Long voteSessionId);
 }

@@ -14,4 +14,5 @@ public interface VoteSessionSecondaryRepositoryPort {
 
     Mono<Boolean> verifyStatusOfVoteSession(Long voteSessionId);
 
+    Mono<VoteSession> update(VoteSession voteSession);
 }

@@ -109,4 +109,21 @@ public class VoteSessionControllerTest {
                 .jsonPath("$.date").isNotEmpty()
                 .jsonPath("$.message").isEqualTo("Vote Session in progress");
     }
+
+    @Test
+    void shouldFinishVoteSessionById_ReturnHttp200(){
+        Long voteSessionId = 4L;
+        webClient
+                .get().uri("/votesessions/v1.0/{voteSessionId}/finish", voteSessionId)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody().consumeWith(System.out::println)
+                .jsonPath("$.id").isNotEmpty()
+                .jsonPath("$.id").isEqualTo(voteSessionId)
+                .jsonPath("$.result").isNotEmpty()
+                .jsonPath("$.result.scoreAgainst").isEqualTo(6)
+                .jsonPath("$.result.scoreFor").isEqualTo(2)
+                .jsonPath("$.result.scoreTotal").isEqualTo(8);
+    }
 }

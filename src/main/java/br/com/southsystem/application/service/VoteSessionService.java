@@ -35,6 +35,19 @@ public class VoteSessionService implements VoteSessionPrimaryPort {
     }
 
     @Override
+    public Mono<VoteSession> finishVoteSession(Long voteSessionId) {
+        return secondaryRepositoryPort
+                .findById(voteSessionId)
+                .switchIfEmpty(Mono.error(new VoteSessionNotFoundException()))
+                .map(voteSession ->  {
+                    voteSession.setEnabled(Boolean.FALSE);
+                    return voteSession;
+                })
+                .flatMap(secondaryRepositoryPort::update)
+                .flatMap(this::loadsResults);
+    }
+
+    @Override
     public Mono<VoteSession> saveVoteSession(VoteSession voteSession) {
         return Mono.just(voteSession)
                 .flatMap(this::verifyExists)

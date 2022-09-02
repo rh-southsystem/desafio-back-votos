@@ -25,7 +25,8 @@ CREATE TABLE tb_votesession(
 INSERT INTO tb_votesession(description, enabled, start_date_time, end_date_time)
     VALUES ('Vote Session 01', TRUE, '2022-07-10 11:00:00', '2022-10-15 11:00:00'),
            ('Vote Session Expired', FALSE, '2022-01-10 11:00:00', '2022-01-15 11:00:00'),
-           ('Vote Session Finish', FALSE, '2022-01-10 11:00:00', '2022-01-15 11:00:00');
+           ('Vote Session Finish', FALSE, '2022-01-10 11:00:00', '2022-01-15 11:00:00'),
+           ('Vote Session 02', FALSE, '2022-01-10 11:00:00', '2022-01-15 11:00:00');
 
 CREATE TABLE tb_voting(
    id serial PRIMARY KEY,
@@ -36,4 +37,5 @@ CREATE TABLE tb_voting(
 
 INSERT INTO tb_voting(vote_session_id, associate_id, vote_type)
     VALUES (1,1,'NO'), (1,1,'YES'), (1,1,'NO'),
-    (3,1,'NO'), (3,2,'YES'), (3,3,'NO'),(3,4,'NO');
+           (3,1,'NO'), (3,2,'YES'), (3,3,'NO'),(3,4,'NO'),
+           (4,1,'NO'), (4,2,'YES'), (4,3,'NO'),(4,4,'NO'), (4,5,'NO'),(4,6,'YES'), (4,7,'NO'),(4,8,'NO');

@@ -25,7 +25,7 @@ public class VoteSessionRepository implements VoteSessionSecondaryRepositoryPort
 
     @Override
     public Mono<VoteSession> save(VoteSession voteSession) {
-        log.debug("call method save by objet: {} ", voteSession);
+        log.debug("call method save of objet: {} ", voteSession);
         return voteSessionDataRepository.save(sqlMapper.toVoteSessionPost(voteSession)).map(sqlMapper::toVoteSessionEntity);
     }
 
@@ -45,6 +45,12 @@ public class VoteSessionRepository implements VoteSessionSecondaryRepositoryPort
     public Mono<Boolean> verifyStatusOfVoteSession(Long voteSessionId) {
         log.debug("call method verifyStatusOfVoteSession by Id: {} ", voteSessionId);
         return voteSessionDataRepository.existsByIdAndEnabledTrue(voteSessionId);
+    }
+
+    @Override
+    public Mono<VoteSession> update(VoteSession voteSession) {
+        log.debug("call method update of objet: {} ", voteSession);
+        return voteSessionDataRepository.save(sqlMapper.toVoteSessionPost(voteSession)).map(sqlMapper::toVoteSessionEntity);
     }
 
 }
