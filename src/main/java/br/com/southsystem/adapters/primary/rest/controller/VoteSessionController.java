@@ -10,12 +10,13 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
-
+@Log4j2
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/votesessions")
@@ -32,6 +33,7 @@ public class VoteSessionController {
                 @ApiResponse(responseCode = "404", description = "Vote Session not found")
             })
     Mono<VoteSessionResponse> getFindById(@PathVariable("voteSessionId") Long voteSessionId) {
+        log.info("Get a vote session by id: {}", voteSessionId);
         return voteSessionPrimaryPort.findById(voteSessionId).map(mapper::toDTO);
     }
 
@@ -43,6 +45,7 @@ public class VoteSessionController {
                     @ApiResponse(responseCode = "404", description = "Vote Session not found")
             })
     Mono<VoteSessionResultResponse> getFindByIdWithResult(@PathVariable("voteSessionId") Long voteSessionId) {
+        log.info("Get a vote session with results by id : {}", voteSessionId);
         return voteSessionPrimaryPort.findVoteSessionByIdWithResult(voteSessionId).map(mapper::toResultDTO);
     }
 
@@ -55,6 +58,7 @@ public class VoteSessionController {
                 @ApiResponse(responseCode = "400", description = "A bad request")
             })
     public Mono<VoteSessionResponse> saveVoteSession(@RequestBody @Valid VoteSessionRequest requestDTO) {
+        log.info("Create a new vote session request body : {}", requestDTO);
         return voteSessionPrimaryPort.saveVoteSession(mapper.toEntity(requestDTO)).map(mapper::toDTO);
     }
 }

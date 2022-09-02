@@ -3,6 +3,7 @@ package br.com.southsystem.adapters.primary.rest.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
+@ToString
 public class VoteSessionRequest {
     @NotBlank(message = "The description cannot be null")
     private String description;

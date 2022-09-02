@@ -8,12 +8,14 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+@Log4j2
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/associates")
@@ -30,6 +32,7 @@ public class AssociateController {
                 @ApiResponse(responseCode = "404", description = "Associate not found")
             })
     public Mono<AssociateResponse> getFindByCpf(@PathVariable("cpfAssociate") String cpfAssociate) {
+        log.info("Get a associate by cpf: {}", cpfAssociate);
         return associatePrimaryPort.findByCpf(cpfAssociate).map(mapper::toResponse);
     }
 }
