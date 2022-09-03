@@ -7,7 +7,7 @@ import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter
@@ -17,7 +17,9 @@ public class VoteSessionRequest {
     @NotBlank(message = "The description cannot be null")
     private String description;
     @NotNull(message = "The startDateTime cannot be null")
-    private LocalDateTime startDateTime;
+    @Pattern(regexp = "(\\d{4})-(\\d{2})-(\\d{2}) (\\d{2}):(\\d{2})", message = "the startDateTime is invalid, must be format yyyy-MM-dd HH:mm")
+    private String startDateTime;
     @NotNull(message = "The endDateTime cannot be null")
-    private LocalDateTime endDateTime;
+    @Pattern(regexp = "(\\d{4})-(\\d{2})-(\\d{2}) (\\d{2}):(\\d{2})", message = "the endDateTime is invalid, must be format yyyy-MM-dd HH:mm")
+    private String endDateTime;
 }

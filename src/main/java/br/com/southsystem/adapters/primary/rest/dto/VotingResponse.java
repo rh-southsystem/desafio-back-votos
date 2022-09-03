@@ -11,4 +11,5 @@ public class VotingResponse {
     private Long id;
     private VoteSessionResponse voteSession;
     private AssociateResponse associate;
+    private String voteType = "SECRET";
 }

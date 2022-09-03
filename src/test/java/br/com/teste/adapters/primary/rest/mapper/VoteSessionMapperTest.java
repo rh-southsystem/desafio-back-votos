@@ -12,6 +12,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -48,11 +51,15 @@ public class VoteSessionMapperTest {
 
         assertNotNull(voteSessionEntity);
         assertEquals(voteSessionRequest.getDescription(), voteSessionEntity.getDescription());
-        assertEquals(voteSessionRequest.getStartDateTime(), voteSessionEntity.getStartDateTime());
-        assertEquals(voteSessionRequest.getEndDateTime(), voteSessionEntity.getEndDateTime());
+        assertEquals(convertToLocalDateTime(voteSessionRequest.getStartDateTime()), voteSessionEntity.getStartDateTime());
+        assertEquals(convertToLocalDateTime(voteSessionRequest.getEndDateTime()), voteSessionEntity.getEndDateTime());
         assertEquals(Boolean.FALSE, voteSessionRequest.equals(voteSessionEntity));
         assertEquals(Boolean.FALSE, voteSessionEntity.equals(voteSessionRequest));
         assertNotNull(voteSessionRequest.toString());
         assertNotNull(voteSessionEntity.toString());
+    }
+
+    private LocalDateTime convertToLocalDateTime(String strDateTime) {
+        return LocalDateTime.parse(strDateTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
 }
