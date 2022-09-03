@@ -97,7 +97,7 @@ public class VotingControllerTest {
                 .body(BodyInserters.fromValue(requestDTO))
                 .exchange()
                 .expectStatus().isBadRequest()
-                .expectBody()
+                .expectBody().consumeWith(System.out::println)
                 .jsonPath("$.date").isNotEmpty()
                 .jsonPath("$.message").isEqualTo("must be any of enum \"YES|NO\"");
     }

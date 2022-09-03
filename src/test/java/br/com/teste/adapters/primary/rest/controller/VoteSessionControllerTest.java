@@ -126,4 +126,17 @@ public class VoteSessionControllerTest {
                 .jsonPath("$.result.scoreFor").isEqualTo(2)
                 .jsonPath("$.result.scoreTotal").isEqualTo(8);
     }
+
+    @Test
+    void shouldGetAllVoteSessions_ReturnHttp200(){
+        webClient
+                .get().uri("/votesessions/v1.0/all")
+                .exchange()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON)
+                .expectBody()
+                .jsonPath("$.length()").isEqualTo(4)
+                .jsonPath("$[0].id").isNotEmpty()
+                .jsonPath("$[0].id").isEqualTo(1)
+                .jsonPath("$[0].description").isEqualTo("Vote Session 01");
+    }
 }

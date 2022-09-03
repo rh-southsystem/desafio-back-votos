@@ -7,6 +7,7 @@ import br.com.southsystem.application.port.secondary.VoteSessionSecondaryReposit
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Log4j2
@@ -51,6 +52,11 @@ public class VoteSessionRepository implements VoteSessionSecondaryRepositoryPort
     public Mono<VoteSession> update(VoteSession voteSession) {
         log.debug("call method update of objet: {} ", voteSession);
         return voteSessionDataRepository.save(sqlMapper.toVoteSessionPost(voteSession)).map(sqlMapper::toVoteSessionEntity);
+    }
+
+    @Override
+    public Flux<VoteSession> getAll() {
+        return voteSessionDataRepository.findAll().map(sqlMapper::toVoteSessionEntity);
     }
 
 }

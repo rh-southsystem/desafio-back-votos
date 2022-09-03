@@ -10,6 +10,7 @@ import br.com.southsystem.application.port.secondary.ResultVoteSessionSecondaryR
 import br.com.southsystem.application.port.secondary.VoteSessionSecondaryRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -45,6 +46,11 @@ public class VoteSessionService implements VoteSessionPrimaryPort {
                 })
                 .flatMap(secondaryRepositoryPort::update)
                 .flatMap(this::loadsResults);
+    }
+
+    @Override
+    public Flux<VoteSession> getAll() {
+        return secondaryRepositoryPort.getAll();
     }
 
     @Override
