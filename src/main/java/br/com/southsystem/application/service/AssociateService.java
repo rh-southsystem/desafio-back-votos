@@ -6,6 +6,7 @@ import br.com.southsystem.application.port.primary.AssociatePrimaryPort;
 import br.com.southsystem.application.port.secondary.AssociateSecondaryRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -23,5 +24,10 @@ public class AssociateService implements AssociatePrimaryPort {
                 .map(c -> c.replaceAll(REGEX_NUMBER_ONLY, SWAP_FOR))
                 .flatMap(associateSecondaryRepositoryPort::findByCpf)
                 .switchIfEmpty(Mono.error(new AssociateNotFoundException(cpfAssociate)));
+    }
+
+    @Override
+    public Flux<Associate> getAll() {
+        return associateSecondaryRepositoryPort.getAll();
     }
 }

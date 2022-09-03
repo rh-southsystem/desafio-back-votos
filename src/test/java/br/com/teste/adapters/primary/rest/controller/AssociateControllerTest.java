@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 @Import({DatabaseConfig.class, JacksonAutoConfiguration.class})
@@ -43,5 +44,19 @@ public class AssociateControllerTest {
                 .jsonPath("$.id").isNotEmpty()
                 .jsonPath("$.name").isEqualTo("Emanuel Hugo Augusto Aragão")
                 .jsonPath("$.cpf").isEqualTo("96722007146");
+    }
+
+    @Test
+    void shouldGetListAllAssociateByCpf_ReturnHttp200(){
+        webClient
+                .get().uri("/associates/v1.0/all")
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON)
+                .expectBody()
+                .jsonPath("$.length()").isEqualTo(8)
+                .jsonPath("$[0].id").isNotEmpty()
+                .jsonPath("$[0].name").isEqualTo("Emanuel Hugo Augusto Aragão")
+                .jsonPath("$[0].cpf").isEqualTo("96722007146");
     }
 }

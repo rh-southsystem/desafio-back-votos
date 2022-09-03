@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Log4j2
@@ -35,4 +36,17 @@ public class AssociateController {
         log.info("Get a associate by cpf: {}", cpfAssociate);
         return associatePrimaryPort.findByCpf(cpfAssociate).map(mapper::toResponse);
     }
+
+    @GetMapping("/v1.0/all")
+    @Operation(
+            summary = "Get a list all associate",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "A list of associate successfully retrieved", content = @Content(schema = @Schema(implementation = AssociateResponse.class))),
+                    @ApiResponse(responseCode = "404", description = "Associate not found")
+            })
+    public Flux<AssociateResponse> getAll() {
+        log.info("Get a list all associate");
+        return associatePrimaryPort.getAll().map(mapper::toResponse);
+    }
+
 }

@@ -7,6 +7,7 @@ import br.com.southsystem.application.port.secondary.AssociateSecondaryRepositor
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 @Log4j2
 @Component
@@ -32,5 +33,11 @@ public class AssociateRepository implements AssociateSecondaryRepositoryPort {
     public Mono<Boolean> existsById(Long associateId) {
         log.debug("call method existsById by id: {} ", associateId);
         return associateDataRepository.existsById(associateId);
+    }
+
+    @Override
+    public Flux<Associate> getAll() {
+        log.debug("call method getAll ");
+        return associateDataRepository.findAll().map(mapper::toAssociateEntity);
     }
 }
