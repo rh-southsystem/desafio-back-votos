@@ -23,8 +23,9 @@ CREATE TABLE tb_votesession(
 );
 
 INSERT INTO tb_votesession(description, enabled, start_date_time, end_date_time)
-    VALUES ('Vote Session 01', TRUE, '2022-10-10 11:00:00', '2022-10-15 11:00:00'),
-           ('Vote Session Expired', FALSE, '2022-01-10 11:00:00', '2022-01-15 11:00:00');
+    VALUES ('Instalação dos quebra-molas nas vias públicas', FALSE, '2022-02-10 07:00:00', '2022-02-15 20:00:00'),
+           ('Proibição som automotivo nas areas de parque infantil', FALSE, '2022-06-02 07:00:00', '2022-06-02 19:00:00'),
+           ('Permitir campanha/publicidade politica na area pública', TRUE, '2022-09-02 12:00:00', '2022-09-10 12:00:00'),
 
 CREATE TABLE tb_voting(
    id serial PRIMARY KEY,

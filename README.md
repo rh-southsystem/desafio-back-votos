@@ -51,3 +51,59 @@ Como você versionaria a API da sua aplicação? Que estratégia usar?
 - Não inicie o teste sem sanar todas as dúvidas
 - Iremos executar a aplicação para testá-la, cuide com qualquer dependência externa e deixe claro caso haja instruções especiais para execução do mesmo
 - Teste bem sua solução, evite bugs
+
+# Instruções de Uso
+### Pré requisito
+Para executar este aplicativo, você precisa instalar duas ferramentas: Docker e Docker Compose.
+
+Instruções de como instalar o Docker no [Ubuntu](https://docs.docker.com/engine/install/ubuntu/), [Windows](https://docs.docker.com/docker-for-windows/install/), [Mac](https://docs.docker.com/docker-for-mac/install/).
+
+Docker Compose já está incluído nos pacotes de instalação para Windows e Mac, portanto, apenas usuários do Ubuntu precisam seguir estas [instruções](https://docs.docker.com/compose/install/).
+
+### Arquitetura
+[imagens]
+### Executando
+Pode ser executado um único comando no terminal:
+~~~
+$ docker-compose up -d
+~~~
+Se você quiser pará-lo, execute o seguinte comando:
+~~~
+$ docker-compose down
+~~~
+
+Irá sube três instâncias: Aplicalção, PgAdmin e o Postgres. 
+
+O PgAdmin é uma ferramenta para gerenciar conteúdo em bancos de dados PostgreSQL.
+- Para acessar o portal do PgAdmin, utilize o link com as credencias abaixo:
+  - URL: http://localhost:9080/
+  - Usuario: xpdo@mail.com.br
+  - Senha: root
+- Para a conexão com o banco de dados PostgreSQL, utilize as credenciais no arquivo .env ou os dados abaixo:
+  - Hostname: postgre-sql.cloud.local
+  - Port: 5432
+  - Usuario: postgres
+  - Senha: Postgres2022!
+A Aplicação (back-votos) você encontrar a lista completa de endpoints REST disponíveis pode ser encontrada na IU Swagger, que esta disponivel no link: http://localhost:8080/webjars/swagger-ui/index.html
+
+### Massa de dados
+Associate:
+
+| id  | Name                              | CPF          |
+|-----|-----------------------------------|--------------|
+| 1   | Emanuel Hugo Augusto Aragão       | 96722007146  |
+| 2   | Pedro Gabriel Fernando Barros     | 82955016900  |
+| 3   | Joaquim Márcio Fábio Rodrigues    | 97638987730  |
+| 4   | Stefany Agatha Kamilly Santos     | 91864586397  |
+| 5   | Alessandra Raquel Isis de Paula   | 09257975452  |
+| 6   | Analu Liz Stella dos Santos       | 19887089745  |
+| 7   | Vitor César Raul Novaes           | 05340638103  |
+| 8   | Manuel Luís Tomás Rodrigues       | 98096435949' |
+
+Vote Session
+
+| id  | Title                                                  | Date Start          | Date End            |
+|-----|--------------------------------------------------------|---------------------|---------------------|
+| 1   | Instalação dos quebra-molas nas vias públicas          | 2022-02-10 07:00:00 | 2022-02-15 20:00:00 |
+| 2   | Proibição som automotivo nas areas de parque infantil  | 2022-06-02 07:00:00 | 2022-06-02 19:00:00 |
+| 3   | Permitir campanha/publicidade politica na area pública | 2022-09-02 12:00:00 | 2022-09-10 12:00:00 |
