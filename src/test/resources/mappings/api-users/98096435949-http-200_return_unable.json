@@ -1,0 +1,15 @@
+{
+    "request": {
+        "urlPath": "/users/98096435949",
+        "method": "GET"
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "status": "UNABLE_TO_VOTE"
+        },
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+}

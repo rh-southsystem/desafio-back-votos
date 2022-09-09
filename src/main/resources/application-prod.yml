@@ -1,0 +1,18 @@
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://postgre-sql.cloud.local:5432/db_votacao?schema=public
+    username: postgres
+    password: Postgres2022!
+  main:
+    allow-bean-definition-overriding: true
+management:
+  endpoint:
+    health:
+      show-details: always
+
+sistema-externo:
+  userinfo:
+    protocolo: https
+    host: user-info.herokuapp.com
+    url-validar:
+          path: /users/{cpf}

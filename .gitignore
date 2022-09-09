@@ -1,0 +1,24 @@
+HELP.md
+target/
+.mvn
+mvnw
+mvnw.cmd
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+
+### IDEA ###
+.idea
+.idea/*.xml
+.vscode
+*.iws
+*.iml
+*.ipr
+
+# Compiled class file
+*.class
+
+# Log file
+**/*.log
+*.log
