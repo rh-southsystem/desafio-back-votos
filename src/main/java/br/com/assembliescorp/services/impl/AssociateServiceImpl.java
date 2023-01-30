@@ -1,10 +1,8 @@
 package br.com.assembliescorp.services.impl;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.assembliescorp.domain.dtos.associate.AssociateCreateDTO;
@@ -32,4 +30,7 @@ public class AssociateServiceImpl implements AssociateService {
 		return associateRepository.findAll().stream().map(AssociateListDTO::new).toList(); 	
 	}
 
+	public Optional<AssociateEntity> findOne(Long idAssociate) {
+		return associateRepository.findById(idAssociate);
+	}
 }

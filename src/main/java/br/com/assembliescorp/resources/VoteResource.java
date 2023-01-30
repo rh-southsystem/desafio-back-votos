@@ -1,10 +1,39 @@
 package br.com.assembliescorp.resources;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import br.com.assembliescorp.domain.dtos.VoteProcess;
+import br.com.assembliescorp.domain.dtos.vote.VoteDTO;
+import br.com.assembliescorp.services.VoteService;
 
 @RestController
 @RequestMapping("api/v1/vote")
-public class VoteResource {	
+public class VoteResource {
+	
+	private final VoteService voteService;
+	
+	@Autowired
+	public VoteResource(VoteService voteService) {
+		this.voteService = voteService;
+	}
+		
+	@PostMapping
+	public ResponseEntity<VoteDTO> vote(@RequestBody VoteDTO vote, UriComponentsBuilder uriBuilder) {
+		var voteDto = voteService.vote(vote);
+        var uri = uriBuilder.path("api/v1/associate/{id}").buildAndExpand(voteDto.id()).toUri();
+        return ResponseEntity.created(uri).body(voteDto);       		
+	}
+	
+	@PostMapping("/process")
+	public ResponseEntity<Void> process(@RequestBody VoteProcess voteProcess) {
+		voteService.process(voteProcess);
+		return ResponseEntity.noContent().build();
+	}
 
 }

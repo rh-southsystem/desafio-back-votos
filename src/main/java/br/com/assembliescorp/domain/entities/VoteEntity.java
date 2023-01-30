@@ -2,7 +2,9 @@ package br.com.assembliescorp.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import br.com.assembliescorp.domain.dtos.vote.VoteDTO;
 import br.com.assembliescorp.domain.enuns.ValueVoteDescription;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -27,18 +29,21 @@ public class VoteEntity extends DefaultEntityModel {
 		
 	@ManyToOne
 	@JoinColumn(name = "ruling_id", nullable = false)
-	private RulingEntity rulingEntity;
+	private RulingEntity ruling;
 	
 	@ManyToOne
 	@JoinColumn(name = "session_id", nullable = false)
-	private SessionEntity sessionEntity;
+	private SessionEntity session;
 	
 	@ManyToOne
 	@JoinColumn(name = "associate_id", nullable = false)
-	private AssociateEntity associateEntity;
+	private AssociateEntity associate;
+	
+	//TODO - Arrumar
+//	@Column(columnDefinition = '')
+	private Boolean apurated = Boolean.FALSE;
 	
 	@Enumerated(EnumType.STRING)
 	@JoinColumn(name = "value", nullable = false)
-	private ValueVoteDescription value;
-
+	private ValueVoteDescription valueVote;
 }
