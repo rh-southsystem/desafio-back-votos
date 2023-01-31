@@ -38,20 +38,27 @@ public class SessionServiceImpl implements SessionService {
 		return new SessionCreateDTO(session);
 	}
 
-	public void finishSession(Long idSession, String jsonResult) {
-		SessionEntity session = findSessionNotClosedOrExpirated(idSession);		
+	public void finishSession(SessionEntity session, String jsonResult) {	
 		session.setFinish(LocalDateTime.now());
 		session.setResult(jsonResult);
 		sessionRepository.save(session);
 	}
 	
-	public SessionEntity findSessionNotClosedOrExpirated(Long idSession) {
+	public SessionEntity findSessionNotClosed(Long idSession) {
 		SessionEntity session = findById(idSession).orElseThrow(NotFoundEntityException::new);
-		if(session.getFinish() != null || session.getBegin().plusMinutes(session.getMinutes()).isAfter(LocalDateTime.now())) {
+		if(session.getFinish() != null) {
 			throw new SessionClosedException();
 		}
 		
 		return session;
+	}
+	
+	public SessionEntity findSessionExpirated(Long idSession) {
+		SessionEntity session = findById(idSession).orElseThrow(NotFoundEntityException::new);
+		if(session.getBegin().plusMinutes(session.getMinutes()).isBefore(LocalDateTime.now())) {
+			return session;
+		}		
+		throw new NotFoundEntityException();
 	}
 
 	public Optional<SessionEntity> findById(Long idSession) {

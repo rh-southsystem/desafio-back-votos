@@ -18,59 +18,69 @@ import br.com.assembliescorp.domain.entities.VoteEntity;
 import br.com.assembliescorp.domain.projections.VoteGroupProjection;
 import br.com.assembliescorp.domain.repositories.VoteRepository;
 import br.com.assembliescorp.resources.exceptions.NotFoundEntityException;
-import br.com.assembliescorp.resources.exceptions.SessionClosedException;
 import br.com.assembliescorp.services.AssociateService;
 import br.com.assembliescorp.services.RulingService;
+import br.com.assembliescorp.services.SendRabbitService;
 import br.com.assembliescorp.services.SessionService;
 import br.com.assembliescorp.services.VoteService;
 import jakarta.transaction.Transactional;
 
 @Service
 public class VotesServiceImpl implements VoteService {
-	
+
 	private final VoteRepository voteRepository;
 	private final AssociateService associateService;
 	private final RulingService rulingService;
 	private final SessionService sessionService;
 	private final ObjectMapper objectMapper;
-	
+	private final SendRabbitService sendRabbitService;
+
 	@Autowired
-	public VotesServiceImpl(VoteRepository voteRepository, AssociateService associateService, RulingService rulingService, SessionService sessionService, ObjectMapper objectMapper) {
+	public VotesServiceImpl(VoteRepository voteRepository, AssociateService associateService,
+			RulingService rulingService, SessionService sessionService, ObjectMapper objectMapper,
+			SendRabbitService sendRabbitService) {
 		this.voteRepository = voteRepository;
 		this.associateService = associateService;
 		this.rulingService = rulingService;
 		this.sessionService = sessionService;
 		this.objectMapper = objectMapper;
+		this.sendRabbitService = sendRabbitService;
 	}
 
 	public VoteDTO vote(VoteDTO voteDTO) {
 		RulingEntity ruling = rulingService.findOne(voteDTO.idSession()).orElseThrow(NotFoundEntityException::new);
-		SessionEntity session = sessionService.findSessionNotClosedOrExpirated(voteDTO.idSession());
-		AssociateEntity associate =  associateService.findOne(voteDTO.idAssociate()).orElseThrow(NotFoundEntityException::new);	
-		var voteEntity = new VoteEntity(ruling, session, associate, Boolean.FALSE, voteDTO.value());		
+		SessionEntity session = sessionService.findSessionExpirated(voteDTO.idSession());
+		AssociateEntity associate = associateService.findOne(voteDTO.idAssociate())
+				.orElseThrow(NotFoundEntityException::new);
+		var voteEntity = new VoteEntity(ruling, session, associate, Boolean.FALSE, voteDTO.value());
 		voteRepository.save(voteEntity);
-		return new VoteDTO(voteEntity);		
+		return new VoteDTO(voteEntity);
 	}
 
 	@Transactional
 	public void process(@RequestBody VoteProcess voteProcess) {
-		
+
 		Long idSession = voteProcess.idSession();
-		sessionService.findSessionNotClosedOrExpirated(idSession);
-				
-		List<VoteGroupProjection> votes = voteRepository.getCountBySession(idSession);		
-		voteRepository.process(idSession);		
-		
-		String results = null;
+		SessionEntity session = sessionService.findSessionNotClosed(idSession);
+
+		List<VoteGroupProjection> votes = voteRepository.getCountBySession(idSession);
+		voteRepository.process(idSession);
+
+		String votesJson = null;
+		String sendRabbitMessage = null;
+		Object[] objects = { session, votes };
+
 		try {
-			results = objectMapper.writeValueAsString(votes);
+			votesJson = objectMapper.writeValueAsString(votes);
+			sendRabbitMessage = objectMapper.writeValueAsString(objects);
 		} catch (JsonProcessingException e) {
-			results = "inconsistente";
+			sendRabbitMessage = votesJson = "inconsistente";
 		}
-		
-		sessionService.finishSession(idSession, results);
-	   
+
+		sessionService.finishSession(session, votesJson);
+
+		sendRabbitService.sendRabbit(sendRabbitMessage);
+
 	}
 
 }
-	
