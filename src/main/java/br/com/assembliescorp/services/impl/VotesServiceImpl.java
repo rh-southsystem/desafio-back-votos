@@ -58,7 +58,7 @@ public class VotesServiceImpl implements VoteService {
 	}
 
 	@Transactional
-	public void process(@RequestBody VoteProcess voteProcess) {
+	public void process(VoteProcess voteProcess) {
 
 		Long idSession = voteProcess.idSession();
 		SessionEntity session = sessionService.findSessionNotClosed(idSession);

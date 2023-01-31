@@ -49,7 +49,7 @@ public class SessionEntity extends DefaultEntityModel {
 	public SessionEntity(SessionCreateDTO sessionCreateDTO) {
 		this.setId(sessionCreateDTO.id());
 		this.setName(sessionCreateDTO.name());
-		this.getRuling().setId(sessionCreateDTO.idRuling());
+//		this.ruling.setId(sessionCreateDTO.idRuling());
 		this.setMinutes(sessionCreateDTO.minutes());
 
 	}

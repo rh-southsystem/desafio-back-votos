@@ -2,7 +2,9 @@ package br.com.assembliescorp.domain.dtos.vote;
 import br.com.assembliescorp.domain.entities.VoteEntity;
 import br.com.assembliescorp.domain.enuns.ValueVoteDescription;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.Builder;
 
+@Builder
 public record VoteDTO(
 		Long id,
 		@NotEmpty

@@ -2,7 +2,9 @@ package br.com.assembliescorp.domain.dtos.ruling;
 
 import br.com.assembliescorp.domain.entities.RulingEntity;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.Builder;
 
+@Builder
 public record RulingCreateDTO(		
 		Long id,
 		@NotEmpty
