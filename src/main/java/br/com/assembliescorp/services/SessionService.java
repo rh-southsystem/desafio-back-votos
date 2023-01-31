@@ -11,6 +11,7 @@ public interface SessionService {
 	
 	List<SessionListDTO> getList();	
 	SessionCreateDTO create(SessionCreateDTO sessionCreateDTO);
+	SessionEntity findSessionNotClosedOrExpirated(Long idSession);
 	Optional<SessionEntity> findById(Long idSession);
 	void finishSession(Long idSession, String jsonResult);
 

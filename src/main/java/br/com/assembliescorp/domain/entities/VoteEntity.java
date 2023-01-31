@@ -39,11 +39,9 @@ public class VoteEntity extends DefaultEntityModel {
 	@JoinColumn(name = "associate_id", nullable = false)
 	private AssociateEntity associate;
 	
-	//TODO - Arrumar
-//	@Column(columnDefinition = '')
 	private Boolean apurated = Boolean.FALSE;
 	
 	@Enumerated(EnumType.STRING)
-	@JoinColumn(name = "value", nullable = false)
+	@JoinColumn(name = "value_vote", nullable = false)
 	private ValueVoteDescription valueVote;
 }

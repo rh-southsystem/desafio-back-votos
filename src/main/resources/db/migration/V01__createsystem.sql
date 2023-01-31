@@ -34,8 +34,9 @@ CREATE TABLE `votes` (
 	`updated` DATETIME NOT NULL,
 	`ruling_id` BIGINT NOT NULL,
 	`session_id` BIGINT NOT NULL,
-	`associate_id` BIGINT NOT NULL, 
-	`value` VARCHAR(3) NOT NULL,
+	`associate_id` BIGINT NOT NULL,
+	`value_vote` VARCHAR(3) NOT NULL,
+	`apurated` TINYINT DEFAULT FALSE,
 	PRIMARY KEY (`id`),
 	CONSTRAINT UC_session_ruling UNIQUE (ruling_id,session_id,associate_id)
 );

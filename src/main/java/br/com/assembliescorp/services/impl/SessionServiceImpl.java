@@ -17,6 +17,8 @@ import br.com.assembliescorp.services.SessionService;
 @Service
 public class SessionServiceImpl implements SessionService {
 	
+	private Long minutes_session = 1L;
+	
 	public final SessionRepository sessionRepository;
 	
 	public SessionServiceImpl(SessionRepository sessionRepository) {
@@ -29,22 +31,29 @@ public class SessionServiceImpl implements SessionService {
 
 	public SessionCreateDTO create(SessionCreateDTO sessionCreateDTO) {
 		var session = new SessionEntity(sessionCreateDTO);
+		if(sessionCreateDTO.minutes() == null) {
+			session.setMinutes(minutes_session);
+		}
 		sessionRepository.save(session);
 		return new SessionCreateDTO(session);
 	}
 
 	public void finishSession(Long idSession, String jsonResult) {
-		SessionEntity session = sessionRepository.findById(idSession).orElseThrow(NotFoundEntityException::new);
-		if(session.getFinish() != null) {
-			throw new SessionClosedException();
-		}
-		
+		SessionEntity session = findSessionNotClosedOrExpirated(idSession);		
 		session.setFinish(LocalDateTime.now());
 		session.setResult(jsonResult);
 		sessionRepository.save(session);
 	}
+	
+	public SessionEntity findSessionNotClosedOrExpirated(Long idSession) {
+		SessionEntity session = findById(idSession).orElseThrow(NotFoundEntityException::new);
+		if(session.getFinish() != null || session.getBegin().plusMinutes(session.getMinutes()).isAfter(LocalDateTime.now())) {
+			throw new SessionClosedException();
+		}
+		
+		return session;
+	}
 
-	@Override
 	public Optional<SessionEntity> findById(Long idSession) {
 		return sessionRepository.findById(idSession);
 	}

@@ -13,7 +13,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.assembliescorp.domain.dtos.ruling.RulingCreateDTO;
 import br.com.assembliescorp.domain.dtos.ruling.RulingListDTO;
-import br.com.assembliescorp.domain.entities.RulingEntity;
 import br.com.assembliescorp.services.RulingService;
 
 @RestController
@@ -34,10 +33,10 @@ public class RulingResource {
 		
 	
 	@PostMapping
-	public ResponseEntity<RulingEntity> create(@RequestBody RulingCreateDTO rulingCreateDTO, UriComponentsBuilder uriBuilder) {	
+	public ResponseEntity<RulingCreateDTO> create(@RequestBody RulingCreateDTO rulingCreateDTO, UriComponentsBuilder uriBuilder) {	
 		var ruling = rulingService.create(rulingCreateDTO);
         var uri = uriBuilder.path("api/v1/associate/{id}").buildAndExpand(ruling.id()).toUri();
-        return ResponseEntity.created(uri).body(new RulingEntity(ruling));       		
+        return ResponseEntity.created(uri).body(ruling);       		
 	}
 
 }

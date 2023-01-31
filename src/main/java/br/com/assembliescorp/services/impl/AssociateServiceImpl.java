@@ -10,6 +10,7 @@ import br.com.assembliescorp.domain.dtos.associate.AssociateListDTO;
 import br.com.assembliescorp.domain.entities.AssociateEntity;
 import br.com.assembliescorp.domain.repositories.AssociateRepository;
 import br.com.assembliescorp.services.AssociateService;
+import jakarta.transaction.Transactional;
 
 @Service
 public class AssociateServiceImpl implements AssociateService {
@@ -20,6 +21,7 @@ public class AssociateServiceImpl implements AssociateService {
 		this.associateRepository = associateRepository;
 	}
 	
+	@Transactional
 	public AssociateCreateDTO create(AssociateCreateDTO associateCreateDTO){
 		
 		//TODO - criar o método para validar associado no endpoint do projeto

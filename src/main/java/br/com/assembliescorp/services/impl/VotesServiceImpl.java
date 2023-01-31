@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import br.com.assembliescorp.domain.dtos.vote.VoteDTO;
 import br.com.assembliescorp.domain.dtos.vote.VoteProcess;
 import br.com.assembliescorp.domain.entities.AssociateEntity;
@@ -29,21 +32,20 @@ public class VotesServiceImpl implements VoteService {
 	private final AssociateService associateService;
 	private final RulingService rulingService;
 	private final SessionService sessionService;
+	private final ObjectMapper objectMapper;
 	
 	@Autowired
-	public VotesServiceImpl(VoteRepository voteRepository, AssociateService associateService, RulingService rulingService, SessionService sessionService) {
+	public VotesServiceImpl(VoteRepository voteRepository, AssociateService associateService, RulingService rulingService, SessionService sessionService, ObjectMapper objectMapper) {
 		this.voteRepository = voteRepository;
 		this.associateService = associateService;
 		this.rulingService = rulingService;
 		this.sessionService = sessionService;
+		this.objectMapper = objectMapper;
 	}
 
 	public VoteDTO vote(VoteDTO voteDTO) {
 		RulingEntity ruling = rulingService.findOne(voteDTO.idSession()).orElseThrow(NotFoundEntityException::new);
-		SessionEntity session = sessionService.findById(voteDTO.idSession()).orElseThrow(NotFoundEntityException::new);
-		if(session.getFinish() != null) {
-			throw new SessionClosedException();
-		}
+		SessionEntity session = sessionService.findSessionNotClosedOrExpirated(voteDTO.idSession());
 		AssociateEntity associate =  associateService.findOne(voteDTO.idAssociate()).orElseThrow(NotFoundEntityException::new);	
 		var voteEntity = new VoteEntity(ruling, session, associate, Boolean.FALSE, voteDTO.value());		
 		voteRepository.save(voteEntity);
@@ -54,17 +56,18 @@ public class VotesServiceImpl implements VoteService {
 	public void process(@RequestBody VoteProcess voteProcess) {
 		
 		Long idSession = voteProcess.idSession();
-		
-		SessionEntity session = sessionService.findById(idSession).orElseThrow(NotFoundEntityException::new);
-		if(session.getFinish() != null) {
-			throw new SessionClosedException();
-		}		
+		sessionService.findSessionNotClosedOrExpirated(idSession);
 				
 		List<VoteGroupProjection> votes = voteRepository.getCountBySession(idSession);		
 		voteRepository.process(idSession);		
 		
-		//TODO - verificar um modo melhor de gravar os totais
-		String results = votes.stream().map(map -> map.getValue().concat("-").concat(map.getTotal())).toString();
+		String results = null;
+		try {
+			results = objectMapper.writeValueAsString(votes);
+		} catch (JsonProcessingException e) {
+			results = "inconsistente";
+		}
+		
 		sessionService.finishSession(idSession, results);
 	   
 	}
