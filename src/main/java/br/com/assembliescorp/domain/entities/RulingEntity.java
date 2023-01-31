@@ -2,7 +2,7 @@ package br.com.assembliescorp.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import br.com.assembliescorp.domain.RulingCreateDTO;
+import br.com.assembliescorp.domain.dtos.ruling.RulingCreateDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -28,5 +28,5 @@ public class RulingEntity extends DefaultEntityModel {
 	public RulingEntity(RulingCreateDTO rulingCreateDTO) {
 		this.name = rulingCreateDTO.name();
 	}
-
+	
 }

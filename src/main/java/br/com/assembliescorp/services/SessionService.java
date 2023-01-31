@@ -1,18 +1,17 @@
 package br.com.assembliescorp.services;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
-
-import br.com.assembliescorp.domain.RulingCreateDTO;
-import br.com.assembliescorp.domain.RulingListDTO;
 import br.com.assembliescorp.domain.dtos.session.SessionCreateDTO;
 import br.com.assembliescorp.domain.dtos.session.SessionListDTO;
+import br.com.assembliescorp.domain.entities.SessionEntity;
 
 public interface SessionService {
 	
 	List<SessionListDTO> getList();	
 	SessionCreateDTO create(SessionCreateDTO sessionCreateDTO);
+	Optional<SessionEntity> findById(Long idSession);
 	void finishSession(Long idSession, String jsonResult);
 
 }

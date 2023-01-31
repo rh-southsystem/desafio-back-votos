@@ -12,6 +12,6 @@ import io.swagger.v3.oas.models.info.Info;
 public class SwaggerConfiguration {
 	 @Bean
 	    public OpenAPI apiInfo() {
-	        return new OpenAPI().info(new Info().title("Teste").version("1.0.0").description("Teste"));
+	        return new OpenAPI().info(new Info().title("Assembly").version("1.0.0").description("Projeto Desafio: Alan Frigério"));
 	    }
 }

@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.assembliescorp.domain.dtos.VoteProcess;
 import br.com.assembliescorp.domain.dtos.vote.VoteDTO;
+import br.com.assembliescorp.domain.dtos.vote.VoteProcess;
 import br.com.assembliescorp.services.VoteService;
 
 @RestController

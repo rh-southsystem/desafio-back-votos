@@ -2,6 +2,7 @@ package br.com.assembliescorp.services.impl;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -9,7 +10,8 @@ import br.com.assembliescorp.domain.dtos.session.SessionCreateDTO;
 import br.com.assembliescorp.domain.dtos.session.SessionListDTO;
 import br.com.assembliescorp.domain.entities.SessionEntity;
 import br.com.assembliescorp.domain.repositories.SessionRepository;
-import br.com.assembliescorp.resources.exceptions.NotFoundEntity;
+import br.com.assembliescorp.resources.exceptions.NotFoundEntityException;
+import br.com.assembliescorp.resources.exceptions.SessionClosedException;
 import br.com.assembliescorp.services.SessionService;
 
 @Service
@@ -32,11 +34,19 @@ public class SessionServiceImpl implements SessionService {
 	}
 
 	public void finishSession(Long idSession, String jsonResult) {
-		//TODO - Criar regra se já não existe ou está fechada
-		SessionEntity session = sessionRepository.findById(idSession).orElseThrow(NotFoundEntity::new);
+		SessionEntity session = sessionRepository.findById(idSession).orElseThrow(NotFoundEntityException::new);
+		if(session.getFinish() != null) {
+			throw new SessionClosedException();
+		}
+		
 		session.setFinish(LocalDateTime.now());
 		session.setResult(jsonResult);
 		sessionRepository.save(session);
+	}
+
+	@Override
+	public Optional<SessionEntity> findById(Long idSession) {
+		return sessionRepository.findById(idSession);
 	}
 
 

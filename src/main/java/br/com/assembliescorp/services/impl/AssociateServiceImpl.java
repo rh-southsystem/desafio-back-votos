@@ -21,6 +21,8 @@ public class AssociateServiceImpl implements AssociateService {
 	}
 	
 	public AssociateCreateDTO create(AssociateCreateDTO associateCreateDTO){
+		
+		//TODO - criar o método para validar associado no endpoint do projeto
 		var associate = new AssociateEntity(associateCreateDTO);
 		associateRepository.save(associate);
 		return new AssociateCreateDTO(associate);		

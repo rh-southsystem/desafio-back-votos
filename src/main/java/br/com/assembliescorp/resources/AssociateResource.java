@@ -31,7 +31,6 @@ public class AssociateResource {
 		return ResponseEntity.ok(this.associateService.getList());
 	}
 		
-	
 	@PostMapping
 	public ResponseEntity<AssociateCreateDTO> create(@RequestBody AssociateCreateDTO associateCreateDTO, UriComponentsBuilder uriBuilder) {		
 		var associate = associateService.create(associateCreateDTO);

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.assembliescorp.domain.RulingCreateDTO;
-import br.com.assembliescorp.domain.RulingListDTO;
+import br.com.assembliescorp.domain.dtos.ruling.RulingCreateDTO;
+import br.com.assembliescorp.domain.dtos.ruling.RulingListDTO;
 import br.com.assembliescorp.domain.entities.RulingEntity;
 import br.com.assembliescorp.services.RulingService;
 

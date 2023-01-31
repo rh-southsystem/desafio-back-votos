@@ -4,14 +4,18 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import br.com.assembliescorp.domain.dtos.VoteProcess;
 import br.com.assembliescorp.domain.dtos.vote.VoteDTO;
+import br.com.assembliescorp.domain.dtos.vote.VoteProcess;
 import br.com.assembliescorp.domain.entities.AssociateEntity;
+import br.com.assembliescorp.domain.entities.RulingEntity;
+import br.com.assembliescorp.domain.entities.SessionEntity;
 import br.com.assembliescorp.domain.entities.VoteEntity;
 import br.com.assembliescorp.domain.projections.VoteGroupProjection;
 import br.com.assembliescorp.domain.repositories.VoteRepository;
-import br.com.assembliescorp.resources.exceptions.NotFoundEntity;
+import br.com.assembliescorp.resources.exceptions.NotFoundEntityException;
+import br.com.assembliescorp.resources.exceptions.SessionClosedException;
 import br.com.assembliescorp.services.AssociateService;
 import br.com.assembliescorp.services.RulingService;
 import br.com.assembliescorp.services.SessionService;
@@ -35,28 +39,30 @@ public class VotesServiceImpl implements VoteService {
 	}
 
 	public VoteDTO vote(VoteDTO voteDTO) {
-//		var session = 
-//		var ruling =
-		AssociateEntity associate =  associateService.findOne(voteDTO.idAssociate()).orElseThrow(NotFoundEntity::new);	
-		var voteEntity = new VoteEntity(null, null, associate, Boolean.FALSE, voteDTO.value());		
+		RulingEntity ruling = rulingService.findOne(voteDTO.idSession()).orElseThrow(NotFoundEntityException::new);
+		SessionEntity session = sessionService.findById(voteDTO.idSession()).orElseThrow(NotFoundEntityException::new);
+		if(session.getFinish() != null) {
+			throw new SessionClosedException();
+		}
+		AssociateEntity associate =  associateService.findOne(voteDTO.idAssociate()).orElseThrow(NotFoundEntityException::new);	
+		var voteEntity = new VoteEntity(ruling, session, associate, Boolean.FALSE, voteDTO.value());		
 		voteRepository.save(voteEntity);
 		return new VoteDTO(voteEntity);		
 	}
 
 	@Transactional
-	public void process(VoteProcess voteProcess) {
+	public void process(@RequestBody VoteProcess voteProcess) {
 		
 		Long idSession = voteProcess.idSession();
 		
-		//verifica se a sessão existe
-		//verifica se ela não está fechada
-		List<VoteGroupProjection> votes = voteRepository.getCountBySession(idSession);
+		SessionEntity session = sessionService.findById(idSession).orElseThrow(NotFoundEntityException::new);
+		if(session.getFinish() != null) {
+			throw new SessionClosedException();
+		}		
 				
-		//recupera os totais por sessão
+		List<VoteGroupProjection> votes = voteRepository.getCountBySession(idSession);		
+		voteRepository.process(idSession);		
 		
-		//grava no session e finaliza
-		voteRepository.process(idSession);
-		//coloca os votos como apurados		
 		//TODO - verificar um modo melhor de gravar os totais
 		String results = votes.stream().map(map -> map.getValue().concat("-").concat(map.getTotal())).toString();
 		sessionService.finishSession(idSession, results);
