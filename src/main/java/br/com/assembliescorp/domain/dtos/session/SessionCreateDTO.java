@@ -8,11 +8,12 @@ public record SessionCreateDTO(
 		@NotEmpty
 		String name,
 		@NotEmpty
+		Long idRuling,
 		Long minutes
 		) {
 	
 	public SessionCreateDTO(SessionEntity sessionEntity) {
-		this(sessionEntity.getId(), sessionEntity.getName(), sessionEntity.getMinutes());	
+		this(sessionEntity.getId(), sessionEntity.getName(), sessionEntity.getRuling().getId(), sessionEntity.getMinutes());	
 	}
 	 
 }

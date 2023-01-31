@@ -52,7 +52,7 @@ public class VotesServiceImpl implements VoteService {
 		SessionEntity session = sessionService.findSessionExpirated(voteDTO.idSession());
 		AssociateEntity associate = associateService.findOne(voteDTO.idAssociate())
 				.orElseThrow(NotFoundEntityException::new);
-		var voteEntity = new VoteEntity(ruling, session, associate, Boolean.FALSE, voteDTO.value());
+		var voteEntity = new VoteEntity(session, associate, Boolean.FALSE, voteDTO.value());
 		voteRepository.save(voteEntity);
 		return new VoteDTO(voteEntity);
 	}

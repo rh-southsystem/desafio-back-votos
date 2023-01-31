@@ -21,18 +21,19 @@ CREATE TABLE `sessions` (
 	`created` DATETIME NOT NULL,
 	`updated` DATETIME NOT NULL,
 	`name` VARCHAR(255) NOT NULL,
+	`ruling_id` BIGINT NOT NULL,
 	`minutes` BIGINT NOT NULL,
 	`begin` DATETIME NOT NULL,
 	`finish` DATETIME,
 	`result` TEXT,
-	PRIMARY KEY (`id`)	
+	PRIMARY KEY (`id`),
+	CONSTRAINT UC_session_ruling UNIQUE (ruling_id)
 );
 
 CREATE TABLE `votes` (
 	`id` BIGINT NOT NULL AUTO_INCREMENT,
 	`created` DATETIME NOT NULL,
 	`updated` DATETIME NOT NULL,
-	`ruling_id` BIGINT NOT NULL,
 	`session_id` BIGINT NOT NULL,
 	`associate_id` BIGINT NOT NULL,
 	`value_vote` VARCHAR(3) NOT NULL,

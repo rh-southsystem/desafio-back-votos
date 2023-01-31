@@ -6,6 +6,8 @@ import br.com.assembliescorp.domain.entities.SessionEntity;
 
 public record SessionListDTO(
 		Long id,
+		String name,
+		Long idRuling,
 		Long minutes,
 		LocalDateTime begin,
 		LocalDateTime finish,
@@ -13,6 +15,6 @@ public record SessionListDTO(
 		) {
 	
 	public SessionListDTO(SessionEntity sessionEntity) {
-		this(sessionEntity.getId(), sessionEntity.getMinutes(), sessionEntity.getBegin(), sessionEntity.getFinish(), sessionEntity.getResult());
+		this(sessionEntity.getId(), sessionEntity.getName(), sessionEntity.getRuling().getId(), sessionEntity.getMinutes(), sessionEntity.getBegin(), sessionEntity.getFinish(), sessionEntity.getResult());
 	}
 }

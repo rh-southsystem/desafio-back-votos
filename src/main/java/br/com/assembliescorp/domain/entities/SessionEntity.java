@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import br.com.assembliescorp.domain.dtos.session.SessionCreateDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -27,6 +29,10 @@ public class SessionEntity extends DefaultEntityModel {
 	
 	@Column(nullable = false)
 	private String name;
+	
+	@ManyToOne
+	@JoinColumn(name = "ruling_id", nullable = false)
+	private RulingEntity ruling;
 
 	@Column(nullable = false)
 	private Long minutes;
@@ -43,6 +49,7 @@ public class SessionEntity extends DefaultEntityModel {
 	public SessionEntity(SessionCreateDTO sessionCreateDTO) {
 		this.setId(sessionCreateDTO.id());
 		this.setName(sessionCreateDTO.name());
+		this.getRuling().setId(sessionCreateDTO.idRuling());
 		this.setMinutes(sessionCreateDTO.minutes());
 
 	}

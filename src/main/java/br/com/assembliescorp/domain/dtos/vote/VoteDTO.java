@@ -8,15 +8,13 @@ public record VoteDTO(
 		@NotEmpty
 		Long idSession,
 		@NotEmpty
-		Long idRuling,
-		@NotEmpty
 		Long idAssociate,
 		@NotEmpty
 		ValueVoteDescription value			
 		) {
 	
 	public VoteDTO(VoteEntity voteEntity) {
-		this(voteEntity.getId(), voteEntity.getSession().getId(), voteEntity.getRuling().getId(), voteEntity.getAssociate().getId(), voteEntity.getValueVote());
+		this(voteEntity.getId(), voteEntity.getSession().getId(), voteEntity.getAssociate().getId(), voteEntity.getValueVote());
 	}
 
 }
