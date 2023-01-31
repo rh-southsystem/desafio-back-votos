@@ -1,5 +1,11 @@
 package br.com.assembliescorp.domain.dtos.vote;
 
-public record VoteProcess(Long idSession) {
+import jakarta.validation.constraints.NotEmpty;
+
+public record VoteProcess(
+		
+		@NotEmpty
+		Long idSession
+		) {
 
 }

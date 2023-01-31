@@ -1,10 +1,17 @@
 package br.com.assembliescorp.domain.dtos.associate;
 
 import br.com.assembliescorp.domain.entities.AssociateEntity;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 
 public record AssociateCreateDTO(		
 		Long id,
+		
+		@NotEmpty
 		String name,
+		
+		@NotEmpty
+		@Pattern(regexp = "\\d{3}\\.?\\d{3}\\.?\\d{3}-?\\d{2}")
 		String cpf
 		) {
 	
