@@ -10,3 +10,6 @@ rabbit:
   results_dx: ${RESULTS_DX:results_dx}
   results_q: ${RESULTS_Q:results_q}
   routing_key: ${ROUTING_KEY:routing_key}
+  
+resttemplate:
+  cpfurl: ${RESTTEMPLATE_CPFURL:https://user-info.herokuapp.com/users/{cpf}}  

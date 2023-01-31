@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import br.com.assembliescorp.domain.clients.CpfValidation;
 import br.com.assembliescorp.domain.dtos.associate.AssociateCreateDTO;
 import br.com.assembliescorp.domain.dtos.associate.AssociateListDTO;
 import br.com.assembliescorp.domain.entities.AssociateEntity;
@@ -15,16 +16,23 @@ import jakarta.transaction.Transactional;
 @Service
 public class AssociateServiceImpl implements AssociateService {
 	
-	public final AssociateRepository associateRepository;
+	private final AssociateRepository associateRepository;
+	private final CpfValidation cpfValidation;
 	
-	public AssociateServiceImpl(AssociateRepository associateRepository) {
+	public AssociateServiceImpl(AssociateRepository associateRepository, CpfValidation cpfValidation) {
 		this.associateRepository = associateRepository;
+		this.cpfValidation = cpfValidation;
 	}
 	
 	@Transactional
 	public AssociateCreateDTO create(AssociateCreateDTO associateCreateDTO){
 		
-		//TODO - criar o método para validar associado no endpoint do projeto
+//		Validação do CPF, conforme tarefa 1
+//		String retorno = cpfValidation.getValidationCpf(associateCreateDTO.cpf());
+//		if(retorno.contains("UNABLE_TO_VOTE")) {
+//			throw new UnableToVoteException();
+//		}
+		
 		var associate = new AssociateEntity(associateCreateDTO);
 		associateRepository.save(associate);
 		return new AssociateCreateDTO(associate);		

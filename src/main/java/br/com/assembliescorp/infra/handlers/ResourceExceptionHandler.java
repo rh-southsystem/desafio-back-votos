@@ -10,6 +10,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import br.com.assembliescorp.resources.exceptions.NotFoundEntityException;
 import br.com.assembliescorp.resources.exceptions.SessionClosedException;
+import br.com.assembliescorp.resources.exceptions.UnableToVoteException;
 
 @RestControllerAdvice
 public class ResourceExceptionHandler {
@@ -22,11 +23,20 @@ public class ResourceExceptionHandler {
 	}
 
 	@ExceptionHandler(value = { SessionClosedException.class })
-	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 	public ErrorMessage resourceNotFoundException(SessionClosedException ex, WebRequest request) {
 		return buildErrorMessage(HttpStatus.BAD_REQUEST.value(), "Sessão já foi finalizada",
 				"Não foi possível utilizar esta sessão pois ela já foi fechada");
 	}
+	
+	@ExceptionHandler(value = { UnableToVoteException.class })
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	public ErrorMessage resourceNotFoundException(UnableToVoteException ex, WebRequest request) {
+		return buildErrorMessage(HttpStatus.BAD_REQUEST.value(), "Não é possível cadastrar associado. Não permitido",
+				"Não é possível cadastrar associado. Não permitido");
+	}
+	
+	
 
 	private ErrorMessage buildErrorMessage(int code, String message, String description) {
 		return ErrorMessage.builder().statusCode(code).timestamp(LocalDateTime.now()).message(message)
