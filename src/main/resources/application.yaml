@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: ${DB_HOST:jdbc:mysql://192.168.0.11/assembly}
+    url: ${DB_HOST:jdbc:mysql://localhost/assembly}
     username: ${DB_USER:root}
-    password: ${DB_PASSWORD:root}  rabbitmq:    host: ${RABBIT_HOST:192.168.0.11}    port: ${RABBIT_PORT:5672}
+    password: ${DB_PASSWORD:root}  rabbitmq:    host: ${RABBIT_HOST:localhost}    port: ${RABBIT_PORT:5672}
     username: ${RABBIT_USERNAME:guest}
     password: ${RABBIT_PASSWORLD:guest}
 

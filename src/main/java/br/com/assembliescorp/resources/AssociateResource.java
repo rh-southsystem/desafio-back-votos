@@ -14,7 +14,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.assembliescorp.domain.dtos.associate.AssociateCreateDTO;
 import br.com.assembliescorp.domain.dtos.associate.AssociateListDTO;
 import br.com.assembliescorp.services.AssociateService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
+@Tag(name = "Associado")
 @RestController
 @RequestMapping("api/v1/associate")
 public class AssociateResource {
@@ -32,7 +35,7 @@ public class AssociateResource {
 	}
 		
 	@PostMapping
-	public ResponseEntity<AssociateCreateDTO> create(@RequestBody AssociateCreateDTO associateCreateDTO, UriComponentsBuilder uriBuilder) {		
+	public ResponseEntity<AssociateCreateDTO> create(@Valid @RequestBody AssociateCreateDTO associateCreateDTO, UriComponentsBuilder uriBuilder) {		
 		var associate = associateService.create(associateCreateDTO);
         var uri = uriBuilder.path("api/v1/associate/{id}").buildAndExpand(associate.id()).toUri();
         return ResponseEntity.created(uri).body(associate);       		

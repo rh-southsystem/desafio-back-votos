@@ -11,7 +11,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.assembliescorp.domain.dtos.vote.VoteDTO;
 import br.com.assembliescorp.domain.dtos.vote.VoteProcess;
 import br.com.assembliescorp.services.VoteService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
+@Tag(name = "Votação")
 @RestController
 @RequestMapping("api/v1/vote")
 public class VoteResource {
@@ -24,7 +27,7 @@ public class VoteResource {
 	}
 		
 	@PostMapping
-	public ResponseEntity<VoteDTO> vote(@RequestBody VoteDTO vote, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<VoteDTO> vote(@Valid @RequestBody VoteDTO vote, UriComponentsBuilder uriBuilder) {
 		var voteDto = voteService.vote(vote);
         var uri = uriBuilder.path("api/v1/associate/{id}").buildAndExpand(voteDto.id()).toUri();
         return ResponseEntity.created(uri).body(voteDto);       		

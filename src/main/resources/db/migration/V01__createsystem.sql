@@ -39,5 +39,5 @@ CREATE TABLE `votes` (
 	`value_vote` VARCHAR(3) NOT NULL,
 	`apurated` TINYINT DEFAULT FALSE,
 	PRIMARY KEY (`id`),
-	CONSTRAINT UC_session_ruling UNIQUE (ruling_id,session_id,associate_id)
+	CONSTRAINT UC_session_ruling UNIQUE (session_id,associate_id)
 );

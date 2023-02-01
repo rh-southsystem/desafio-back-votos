@@ -14,7 +14,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.assembliescorp.domain.dtos.ruling.RulingCreateDTO;
 import br.com.assembliescorp.domain.dtos.ruling.RulingListDTO;
 import br.com.assembliescorp.services.RulingService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
+@Tag(name = "Pauta")
 @RestController
 @RequestMapping("api/v1/ruling")
 public class RulingResource {
@@ -33,7 +36,7 @@ public class RulingResource {
 		
 	
 	@PostMapping
-	public ResponseEntity<RulingCreateDTO> create(@RequestBody RulingCreateDTO rulingCreateDTO, UriComponentsBuilder uriBuilder) {	
+	public ResponseEntity<RulingCreateDTO> create(@Valid @RequestBody RulingCreateDTO rulingCreateDTO, UriComponentsBuilder uriBuilder) {	
 		var ruling = rulingService.create(rulingCreateDTO);
         var uri = uriBuilder.path("api/v1/associate/{id}").buildAndExpand(ruling.id()).toUri();
         return ResponseEntity.created(uri).body(ruling);       		

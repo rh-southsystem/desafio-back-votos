@@ -14,7 +14,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.assembliescorp.domain.dtos.session.SessionCreateDTO;
 import br.com.assembliescorp.domain.dtos.session.SessionListDTO;
 import br.com.assembliescorp.services.SessionService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
+@Tag(name = "Sessão")
 @RestController
 @RequestMapping("api/v1/sesson")
 public class SessionResource {
@@ -32,7 +35,7 @@ public class SessionResource {
 	}
 
 	@PostMapping
-	public ResponseEntity<SessionCreateDTO> create(@RequestBody SessionCreateDTO sessionCreateDTO,
+	public ResponseEntity<SessionCreateDTO> create(@Valid @RequestBody SessionCreateDTO sessionCreateDTO,
 			UriComponentsBuilder uriBuilder) {
 		var session = service.create(sessionCreateDTO);
 		var uri = uriBuilder.path("api/v1/associate/{id}").buildAndExpand(session.id()).toUri();

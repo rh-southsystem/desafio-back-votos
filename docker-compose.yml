@@ -1,0 +1,57 @@
+version: '3.1'
+
+services:
+  dozzle:
+    container_name: dozzle_assemblies
+    restart: always
+    image: amir20/dozzle:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 9999:8080
+  db:
+    container_name: database_mysql_assemblies
+    image: mysql    
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    expose:
+      - '3306'
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq_assemblies'
+    restart: unless-stopped
+    ports:
+      - 5672:5672
+      - 15672:15672
+#    volumes:
+#      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+#      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+
+  backend:
+    image: openjdk:17-oracle
+    container_name: backend-assemblies
+    restart: unless-stopped
+    environment:
+      - TZ=America/Sao_Paulo
+    depends_on:
+      - db
+      - rabbitmq
+    network_mode: bridge
+    ports:
+      - '8080:8080'
+    entrypoint:
+      - "java"
+      - "-server"
+      - "-jar"
+      - "./target/assembliescorp-0.0.1-SNAPSHOT.jar"      

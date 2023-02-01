@@ -9,9 +9,9 @@ import io.swagger.v3.oas.models.info.Info;
 
 @OpenAPIDefinition
 @Configuration
-public class SwaggerConfiguration {
+public class OpenAPIConfiguration {
 	 @Bean
 	    public OpenAPI apiInfo() {
 	        return new OpenAPI().info(new Info().title("Assembly").version("1.0.0").description("Projeto Desafio: Alan Frigério"));
-	    }
+	    }	
 }
