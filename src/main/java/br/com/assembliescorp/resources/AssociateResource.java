@@ -14,6 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.assembliescorp.domain.dtos.associate.AssociateCreateDTO;
 import br.com.assembliescorp.domain.dtos.associate.AssociateListDTO;
 import br.com.assembliescorp.services.AssociateService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -30,11 +31,13 @@ public class AssociateResource {
 	}
 	
 	@GetMapping
+	@Operation(summary = "Listar de Associados")
 	public ResponseEntity<List<AssociateListDTO>> getPageable(){
 		return ResponseEntity.ok(this.associateService.getList());
 	}
 		
 	@PostMapping
+	@Operation(summary = "Criar Associados")
 	public ResponseEntity<AssociateCreateDTO> create(@Valid @RequestBody AssociateCreateDTO associateCreateDTO, UriComponentsBuilder uriBuilder) {		
 		var associate = associateService.create(associateCreateDTO);
         var uri = uriBuilder.path("api/v1/associate/{id}").buildAndExpand(associate.id()).toUri();

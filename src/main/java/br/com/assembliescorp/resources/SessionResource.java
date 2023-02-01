@@ -14,6 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.assembliescorp.domain.dtos.session.SessionCreateDTO;
 import br.com.assembliescorp.domain.dtos.session.SessionListDTO;
 import br.com.assembliescorp.services.SessionService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -30,11 +31,13 @@ public class SessionResource {
 	}
 
 	@GetMapping
+	@Operation(summary = "Listar Sessão")
 	public ResponseEntity<List<SessionListDTO>> getPageable() {
 		return ResponseEntity.ok(this.service.getList());
 	}
 
 	@PostMapping
+	@Operation(summary = "Criar Sessão")
 	public ResponseEntity<SessionCreateDTO> create(@Valid @RequestBody SessionCreateDTO sessionCreateDTO,
 			UriComponentsBuilder uriBuilder) {
 		var session = service.create(sessionCreateDTO);

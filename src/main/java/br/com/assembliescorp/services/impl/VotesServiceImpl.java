@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,7 +23,9 @@ import br.com.assembliescorp.services.SendRabbitService;
 import br.com.assembliescorp.services.SessionService;
 import br.com.assembliescorp.services.VoteService;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class VotesServiceImpl implements VoteService {
 
@@ -54,18 +55,21 @@ public class VotesServiceImpl implements VoteService {
 				.orElseThrow(NotFoundEntityException::new);
 		var voteEntity = new VoteEntity(session, associate, Boolean.FALSE, voteDTO.value());
 		voteRepository.save(voteEntity);
+		log.info("VOTACAO DA SESSAO {} COMPUTADA COM SUCESSO DO ASSOCIADO", voteDTO.idSession(), voteDTO.idAssociate());
 		return new VoteDTO(voteEntity);
 	}
 
 	@Transactional
 	public void process(VoteProcess voteProcess) {
-
+		log.info(">>> INICIO DA APURAÇÃOD E VOTOS DA SESSAO {}", voteProcess.idSession());
 		Long idSession = voteProcess.idSession();
 		SessionEntity session = sessionService.findSessionNotClosed(idSession);
 
 		List<VoteGroupProjection> votes = voteRepository.getCountBySession(idSession);
+		log.info("APURADO {} VOTOS DA SESSAO {}", votes.size(), voteProcess.idSession());
+		
 		voteRepository.process(idSession);
-
+		
 		String votesJson = null;
 		String sendRabbitMessage = null;
 		Object[] objects = { session, votes };
@@ -74,12 +78,14 @@ public class VotesServiceImpl implements VoteService {
 			votesJson = objectMapper.writeValueAsString(votes);
 			sendRabbitMessage = objectMapper.writeValueAsString(objects);
 		} catch (JsonProcessingException e) {
+			log.error("APURAÇÃO INCONSISTENTE DA SESSSAO {}", voteProcess.idSession());
 			sendRabbitMessage = votesJson = "inconsistente";
 		}
 
 		sessionService.finishSession(session, votesJson);
 
 		sendRabbitService.sendRabbit(sendRabbitMessage);
+		log.info(">>> FIM DA APURAÇÃO E VOTOS DA SESSAO {}", voteProcess.idSession());
 
 	}
 

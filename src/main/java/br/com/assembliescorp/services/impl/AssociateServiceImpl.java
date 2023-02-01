@@ -12,7 +12,9 @@ import br.com.assembliescorp.domain.entities.AssociateEntity;
 import br.com.assembliescorp.domain.repositories.AssociateRepository;
 import br.com.assembliescorp.services.AssociateService;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class AssociateServiceImpl implements AssociateService {
 	
@@ -25,8 +27,7 @@ public class AssociateServiceImpl implements AssociateService {
 	}
 	
 	@Transactional
-	public AssociateCreateDTO create(AssociateCreateDTO associateCreateDTO){
-		
+	public AssociateCreateDTO create(AssociateCreateDTO associateCreateDTO){	
 //		Validação do CPF, conforme tarefa 1
 //		String retorno = cpfValidation.getValidationCpf(associateCreateDTO.cpf());
 //		if(retorno.contains("UNABLE_TO_VOTE")) {
@@ -35,6 +36,7 @@ public class AssociateServiceImpl implements AssociateService {
 		
 		var associate = new AssociateEntity(associateCreateDTO);
 		associateRepository.save(associate);
+		log.info("ASSOCIADO CADASTRADO COM SUCESSO : {}",associateCreateDTO.name());
 		return new AssociateCreateDTO(associate);		
 	}
 

@@ -13,7 +13,9 @@ import br.com.assembliescorp.domain.repositories.SessionRepository;
 import br.com.assembliescorp.resources.exceptions.NotFoundEntityException;
 import br.com.assembliescorp.resources.exceptions.SessionClosedException;
 import br.com.assembliescorp.services.SessionService;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class SessionServiceImpl implements SessionService {
 	
@@ -35,6 +37,7 @@ public class SessionServiceImpl implements SessionService {
 			session.setMinutes(minutes_session);
 		}
 		sessionRepository.save(session);
+		log.info("SESSAO CADASTRADO COM SUCESSO : {}", sessionCreateDTO.name());
 		return new SessionCreateDTO(session);
 	}
 
@@ -42,11 +45,13 @@ public class SessionServiceImpl implements SessionService {
 		session.setFinish(LocalDateTime.now());
 		session.setResult(jsonResult);
 		sessionRepository.save(session);
+		log.info("SESSAO FINALIZADA COM SUCESSO: {}", session.getName());
 	}
 	
 	public SessionEntity findSessionNotClosed(Long idSession) {
 		SessionEntity session = findById(idSession).orElseThrow(NotFoundEntityException::new);
 		if(session.getFinish() != null) {
+			log.error("SESSAO {} JÁ FINALIZADA", session.getName());
 			throw new SessionClosedException();
 		}
 		
@@ -57,7 +62,8 @@ public class SessionServiceImpl implements SessionService {
 		SessionEntity session = findById(idSession).orElseThrow(NotFoundEntityException::new);
 		if(session.getBegin().plusMinutes(session.getMinutes()).isBefore(LocalDateTime.now())) {
 			return session;
-		}		
+		}
+		log.error("SESSAO {} JÁ EXPIRADA", session.getName());
 		throw new NotFoundEntityException();
 	}
 

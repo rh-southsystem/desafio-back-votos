@@ -14,6 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.assembliescorp.domain.dtos.ruling.RulingCreateDTO;
 import br.com.assembliescorp.domain.dtos.ruling.RulingListDTO;
 import br.com.assembliescorp.services.RulingService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -30,12 +31,14 @@ public class RulingResource {
 	}
 	
 	@GetMapping
+	@Operation(summary = "Listar Pautas")
 	public ResponseEntity<List<RulingListDTO>> getPageable(){
 		return ResponseEntity.ok(this.rulingService.getList());
 	}
 		
 	
 	@PostMapping
+	@Operation(summary = "Criar Pauta")
 	public ResponseEntity<RulingCreateDTO> create(@Valid @RequestBody RulingCreateDTO rulingCreateDTO, UriComponentsBuilder uriBuilder) {	
 		var ruling = rulingService.create(rulingCreateDTO);
         var uri = uriBuilder.path("api/v1/associate/{id}").buildAndExpand(ruling.id()).toUri();
