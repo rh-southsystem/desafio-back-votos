@@ -8,15 +8,16 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import br.com.assembliescorp.domain.clients.CpfValidation;
 import br.com.assembliescorp.domain.dtos.vote.VoteDTO;
 import br.com.assembliescorp.domain.dtos.vote.VoteProcess;
 import br.com.assembliescorp.domain.entities.AssociateEntity;
-import br.com.assembliescorp.domain.entities.RulingEntity;
 import br.com.assembliescorp.domain.entities.SessionEntity;
 import br.com.assembliescorp.domain.entities.VoteEntity;
 import br.com.assembliescorp.domain.projections.VoteGroupProjection;
 import br.com.assembliescorp.domain.repositories.VoteRepository;
 import br.com.assembliescorp.resources.exceptions.NotFoundEntityException;
+import br.com.assembliescorp.resources.exceptions.UnableToVoteException;
 import br.com.assembliescorp.services.AssociateService;
 import br.com.assembliescorp.services.RulingService;
 import br.com.assembliescorp.services.SendRabbitService;
@@ -31,28 +32,35 @@ public class VotesServiceImpl implements VoteService {
 
 	private final VoteRepository voteRepository;
 	private final AssociateService associateService;
-	private final RulingService rulingService;
 	private final SessionService sessionService;
 	private final ObjectMapper objectMapper;
 	private final SendRabbitService sendRabbitService;
-
+	private final CpfValidation cpfValidation;
+	
 	@Autowired
 	public VotesServiceImpl(VoteRepository voteRepository, AssociateService associateService,
-			RulingService rulingService, SessionService sessionService, ObjectMapper objectMapper,
-			SendRabbitService sendRabbitService) {
+			SessionService sessionService, ObjectMapper objectMapper,
+			SendRabbitService sendRabbitService, CpfValidation cpfValidation) {
 		this.voteRepository = voteRepository;
 		this.associateService = associateService;
-		this.rulingService = rulingService;
 		this.sessionService = sessionService;
 		this.objectMapper = objectMapper;
 		this.sendRabbitService = sendRabbitService;
+		this.cpfValidation = cpfValidation;
 	}
 
-	public VoteDTO vote(VoteDTO voteDTO) {
-		RulingEntity ruling = rulingService.findOne(voteDTO.idSession()).orElseThrow(NotFoundEntityException::new);
-		SessionEntity session = sessionService.findSessionExpirated(voteDTO.idSession());
+	public VoteDTO vote(VoteDTO voteDTO) {		
 		AssociateEntity associate = associateService.findOne(voteDTO.idAssociate())
 				.orElseThrow(NotFoundEntityException::new);
+		
+//		Validação do CPF, conforme tarefa 1
+//		String retorno = cpfValidation.getValidationCpf(associate.getCpf());
+//		if(retorno.contains("UNABLE_TO_VOTE")) {
+//			throw new UnableToVoteException();
+//		}
+		
+		SessionEntity session = sessionService.findSessionExpirated(voteDTO.idSession());
+		
 		var voteEntity = new VoteEntity(session, associate, Boolean.FALSE, voteDTO.value());
 		voteRepository.save(voteEntity);
 		log.info("VOTACAO DA SESSAO {} COMPUTADA COM SUCESSO DO ASSOCIADO", voteDTO.idSession(), voteDTO.idAssociate());

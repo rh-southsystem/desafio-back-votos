@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import br.com.assembliescorp.domain.clients.CpfValidation;
 import br.com.assembliescorp.domain.dtos.vote.VoteDTO;
 import br.com.assembliescorp.domain.dtos.vote.VoteProcess;
 import br.com.assembliescorp.domain.entities.AssociateEntity;
@@ -44,15 +45,16 @@ public class VotesServiceImplTest {
 	ObjectMapper objectMapper;
 	@Mock
 	SendRabbitService sendRabbitService;
+	@Mock
+	CpfValidation cpfValidation;
 
 	@BeforeEach
 	void setUp() {
-		votesServiceImpl = new VotesServiceImpl(voteRepository, associateService, rulingService, sessionService, objectMapper, sendRabbitService);
+		votesServiceImpl = new VotesServiceImpl(voteRepository, associateService, sessionService, objectMapper, sendRabbitService, cpfValidation);
 	}
 	
 	@Test
 	void vote() {
-		when(rulingService.findOne(any())).thenReturn(Optional.of(buildRulingEntity()));
 		when(sessionService.findSessionExpirated(any())).thenReturn(buildSessionEntity());
 		when(associateService.findOne(any())).thenReturn(Optional.of(buildAssociateEntity()));
 		assertThat(votesServiceImpl.vote(buildVote())).isNotNull();

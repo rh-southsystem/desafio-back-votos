@@ -8,7 +8,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import br.com.assembliescorp.domain.clients.CpfValidation;
 import br.com.assembliescorp.domain.dtos.associate.AssociateCreateDTO;
 import br.com.assembliescorp.domain.repositories.AssociateRepository;
 
@@ -18,14 +17,11 @@ public class AssociateServiceImplTest {
     private AssociateServiceImpl associateServiceImpl;
 	
 	@Mock
-	private AssociateRepository associateRepository; 
-	
-	@Mock
-	private CpfValidation cpfValidation;
+	private AssociateRepository associateRepository;
 
     @BeforeEach
     void setUp() {
-    	associateServiceImpl = new AssociateServiceImpl(associateRepository, cpfValidation);
+    	associateServiceImpl = new AssociateServiceImpl(associateRepository);
     }
 
     @Test
